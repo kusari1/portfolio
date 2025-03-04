@@ -24,21 +24,30 @@
         print '<p>$score:'.$random02.'</p>';
 
         print'<p>random01 = '.$random01.',random02 = '.$random02;
-        if($random01 > $random02){
-            print'random01の方が大きいです。 ';
-        }else if ($random01 == $random02){
-            print'2つの数は同じです。';
-        }else{
-            print'random02の方が大きいです。 ';
-        }
 
-        if($random01 % 3 == 0 && $random02 % 3 == 0){
+        if($random01 > $random02):
+            print'random01の方が大きいです。 ';
+        elseif($random01 == $random02):
+            print'2つの数は同じです。';
+        else:
+            print'random02の方が大きいです。 ';
+        endif;
+
+        // if($random01 % 3 == 0 && $random02 % 3 == 0){
+        //     print '2つの数字の中には3の倍数が2つ含まれています';
+        // }else if($random01 % 3 == 0 || $random02 % 3 == 0){
+        //     print '2つの数字の中には3の倍数が1つ含まれています';
+        // }else {
+        //     print '2つの数字の中に3の倍数が含まれていません';
+        // }
+
+        if($random01 % 3 == 0 && $random02 % 3 == 0):
             print '2つの数字の中には3の倍数が2つ含まれています';
-        }else if($random01 % 3 == 0 || $random02 % 3 == 0){
+        elseif($random01 % 3 == 0 || $random02 % 3 == 0):
             print '2つの数字の中には3の倍数が1つ含まれています';
-        }else {
+        else:
             print '2つの数字の中に3の倍数が含まれていません';
-        }
+        endif;
     ?>
 </body>
 </html>

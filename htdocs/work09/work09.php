@@ -8,7 +8,11 @@
 <body>
     <?php 
         $score = rand(1,100);
-        print '<p>$score:'.$score.'</p>';
+        ?>
+
+        <p>$score:<?php echo $score ?></p>
+
+        <?php
         if ($score % 3 == 0 && $score % 6 == 0){
             print'<p>3と6の倍数です</p>';
         } else if ($score % 3 == 0){
@@ -16,14 +20,19 @@
         } else {
             print'<p>倍数ではありません。</p>';
         }
+        ?>
 
+        <?php
         $random01 = rand(1,10);
         $random02 = rand(1,10);
         $count = 0;
-        print '<p>$score:'.$random01.'</p>';
-        print '<p>$score:'.$random02.'</p>';
+        ?>
+        <p>$score:<?php echo $random01 ?></p>
+        <p>$score:<?php echo $random02 ?></p>
 
-        print'<p>random01 = '.$random01.',random02 = '.$random02;
+        <p>random01 = <?php echo $random01 ?>,random02 = <?php echo $random02 ?></p>
+
+        <?php
         if($random01 > $random02){
             print'random01の方が大きいです。 ';
         }else if ($random01 == $random02){
@@ -31,7 +40,9 @@
         }else{
             print'random02の方が大きいです。 ';
         }
+        ?>
 
+        <?php
         if($random01 % 3 == 0 && $random02 % 3 == 0){
             print '2つの数字の中には3の倍数が2つ含まれています';
         }else if($random01 % 3 == 0 || $random02 % 3 == 0){
@@ -39,6 +50,6 @@
         }else {
             print '2つの数字の中に3の倍数が含まれていません';
         }
-    ?>
+        ?>
 </body>
 </html>

@@ -8,13 +8,14 @@
 <body>
   <?php
     $num = array(); 
+    $j = 0;
     for($i = 0; $i < 5; $i++):
-      $num[$i] = rand(1,100);
+      $j = rand(1,100);
+      array_push($num,$j);
     endfor;
 
-    echo $num;
-
-
+    // print $num[0];
+    print_r($num);
   ?>
 </body>
 </html>

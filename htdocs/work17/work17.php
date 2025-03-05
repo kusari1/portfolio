@@ -1,7 +1,12 @@
 <?php 
   $checks = '';
   if (isset($_POST['checkbox'])){
-    $checks = htmlspecialchars(());
+    $checks = htmlspecialchars($_POST['checkbox'],ENT_QUOTES,'UTF-8');
+  }
+
+  $name = '';
+  if (isset($_POST['name'])){
+    $name = htmlspecialchars($_POST['name'],ENT_QUOTES,'UTF-8');
   }
 ?>
 <!DOCTYPE html>
@@ -21,17 +26,24 @@
 </head>
 <body>
     <div>名前入力</div>
-    <form method = "post" action ="work16_02.php">
+    <form method = "post">
       <input type="text" name="name">
     <div>選択肢をチェック</div>
       <input type="checkbox" name="checkbox" value="1">
       <label>選択肢1</label>
-      <input type="checkbox" name="checkbox2" value="2">
+      <input type="checkbox" name="checkbox" value="2">
       <label>選択肢2</label>
-      <input type="checkbox" name="checkbox3" value="3">
+      <input type="checkbox" name="checkbox" value="3">
       <label>選択肢3</label>
     <input type="submit" value="送信">
     </form>
+    <!-- ここではリクエストメソッドがPOSTかどうかを判定しています。 -->
+<!-- 従って、初期表示の際はif文の中は読み込まれません。 -->
+    <?php if($_SERVER["REQUEST_METHOD"] == "POST"): ?>
+      <div>名前は：<?php echo $name; ?></div>
+      <div>選んだ選択肢は「<?php echo $checks; ?>」です。</div>
+    <?php endif; ?>
+
 </body>
 </html>
 </body>

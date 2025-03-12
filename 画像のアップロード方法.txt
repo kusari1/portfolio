@@ -1,4 +1,5 @@
 画像のアップロード方法
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,3 +14,6 @@
     </body>
 </html>
 
+$_FILESはファイルの情報を格納するスーパーグローバル変数です。
+
+$save = 'img/' . basename($_FILES['upload_image']['name']);

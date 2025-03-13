@@ -79,22 +79,6 @@
             }
         }
 
-        // $select = "SELECT product_name, price FROM product WHERE product_id = 1";
-        // if($result = $db->query($select)){
-        //     //連想配列を取得
-        //     while ($row = $result->fetch_assoc()){
-        //         $product_name = $row["product_name"];
-        //         $price = $row["price"];
-        //     }
-        //     //結果セットを閉じる
-        //     $result -> close();
-        // }
-        // if($price == 150){
-        //     $price_val = 130;
-        // } else {
-        //     $price_val = 150;
-        // }
-
         $db -> close(); //接続を閉じる
 
     ?>

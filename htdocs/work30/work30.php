@@ -1,86 +1,95 @@
-<?php 
-    $host = 'localhost';
-    $login_user = 'xb513874_vfrg6';
-    $password = '7mumpav176';
-    $database = 'xb513874_t8tcu';
-    $error_msg = [];
-    $image_id;
-    $image_name;
-    $public_flg;
-    $create_date;
-    $update_date;
-?>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>画像アップロード</title>
 </head>
-<body>
-    <?php 
-        //データベースへ接続
-        $db = new mysqli($host,$login_user,$password,$database);
-        if($db -> connect_error){
-            echo $db -> connect_error;
-            exit();
+<body>    
+
+<?php
+
+// データベース接続情報
+$servername = "localhost";  // サーバー名（ローカルホスト）
+$username = "xb513874_vfrg6";  // データベースのユーザー名
+$password = "7mumpav176";  // データベースのパスワード
+$dbname = "xb513874_t8tcu";  // データベース名
+
+// MySQLデータベースに接続
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// 接続エラーが発生した場合、エラーメッセージを表示して終了
+if ($conn->connect_error) {
+    die("接続失敗: " . $conn->connect_error);
+}
+
+// フォームが送信され、画像がアップロードされた場合の処理
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["image"])) {
+
+    //画像名を取得
+    $image_name = $_POST['image_name'];
+    // アップロードされたファイルの名前を取得
+    $imageName = basename($_FILES["image"]["name"]);
+
+    // 公開フラグ（チェックボックスの状態に応じて1または0）
+    $publicFlg = isset($_POST["public_flg"]) ? 1 : 0;
+
+    // 画像保存先のディレクトリ
+    $targetDir = "uploads/";
+
+    // 保存するファイルのフルパスを設定
+    $targetFile = $targetDir . $imageName;
+
+    // 【重要】アップロードディレクトリが存在しない場合は作成
+    if (!is_dir($targetDir)) {
+        mkdir($targetDir, 0777, true);  // 0777は読み書き実行可能な権限
+    }
+
+    // 【セキュリティ対策】許可する画像のMIMEタイプを設定
+    $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+
+    // アップロードされたファイルのMIMEタイプを取得
+    $fileType = mime_content_type($_FILES["image"]["tmp_name"]);
+
+    // 許可されたMIMEタイプでない場合はエラーメッセージを表示して処理を中断
+    if (!in_array($fileType, $allowedTypes)) {
+        echo "エラー: JPEG、PNG、GIFの画像のみアップロードできます。";
+    } else {
+        // 【ファイル移動】一時ファイルから指定のディレクトリに画像を保存
+        if (move_uploaded_file($_FILES["image"]["tmp_name"], $targetFile)) {
+            // 【データベース登録】画像情報を `images` テーブルに追加
+            $stmt = $conn->prepare("INSERT INTO images (image_name, public_flg) VALUES ($image_name, ?)");
+
+            // クエリのプレースホルダに値をバインド（SQLインジェクション対策）
+            // $stmt->bind_param("si", $imageName, $publicFlg);
+
+            // SQL実行
+            if ($stmt->execute()) {
+                echo "画像が正常にアップロードされました。";
+            } else {
+                echo "データベース登録エラー: " . $stmt->error;
+            }
+
+            // ステートメントを閉じる
+            $stmt->close();
         } else {
-            $db->set_charset("utf8");
+            // ファイル移動に失敗した場合のエラーメッセージ
+            echo "画像のアップロードに失敗しました。";
         }
+    }
+}
 
-        if($_SERVER["REQUEST_METHOD"] == "POST"){
-            if (isset($_POST['insert'])){ 
-            $db->begin_transaction();//トランザクション開始
+// データベース接続を閉じる
+$conn->close();
+?>
 
-            //UPDATE文の実行
-            $insert = "INSERT INTO product(product_id,product_code,product_name,price,category_id)VALUES(21, 1021, 'エシャロット', 200, 1);";
-            if($result = $db->query($insert)){
-                $row = $db->affected_rows;
-            } else {
-                $error_msg[] = 'UPDATE実行エラー[実行SQK]'.$insert;
-            }
-            //$erroe_msg[] = 強制的にエラーメッセージを挿入
+<!-- 画像アップロードフォーム -->
+<form action="work30.php" method="post" enctype="multipart/form-data">
+    <input type="text" name="image_name"> <!--画像名-->
+    画像を選択: <input type="file" name="image" required> <!-- ファイル選択ボタン -->
+    <label><input type="checkbox" name="public_flg"> 公開する</label> <!-- 公開設定チェックボックス -->
+    <input type="submit" value="アップロード"> <!-- アップロードボタン -->
+</form>
 
-            //エラーメッセージ格納の有無によりトランザクションの成否を判定
-            if(count($error_msg) == 0){
-                echo $row.'件更新しました。';
-                $db->commit(); //正常に終了したらコミット
-            } else {
-                echo '更新が失敗しました。';
-                $db->rollback(); //エラーが起きたらロールバック
-            }
-               // 下記はエラー確認用。エラー確認が必要な際にはコメントを外してください。
-            // var_dump($error_msg); 
-            }
-
-            //deleteボタン
-            if(isset($_POST['delete'])){
-                $db->begin_transaction();//トランザクション開始
-            //delete文実行
-                $delete = "DELETE FROM product WHERE product_id = 21";
-                if($result = $db->query($delete)){
-                    $row = $db->affected_rows;
-                } else {
-                    $error_msg[] = 'UPDATE実行エラー[実行SQK]'.$delete;
-                }
-                //$erroe_msg[] = 強制的にエラーメッセージを挿入
-                if(count($error_msg) == 0){
-                    echo $row.'件削除しました。';
-                    $db->commit(); //正常に終了したらコミット
-                } else {
-                    echo '更新が失敗しました。';
-                    $db->rollback(); //エラーが起きたらロールバック
-                }
-                   // 下記はエラー確認用。エラー確認が必要な際にはコメントを外してください。
-                // var_dump($error_msg); 
-            }
-        }
-        $db -> close(); //接続を閉じる
-
-    ?>
-    
-    <form method="post">
-        <h1>画像をアップロード</h1>
-    </form>
 </body>
 </html>

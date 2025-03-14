@@ -28,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["image"])) {
     // アップロードされたファイルの名前を取得
     $imageName = basename($_FILES["image"]["name"]);
 
-    // ユーザーが指定した画像名を取得（省略可）
+    // ユーザーが指定した画像名を取得 pathinfo(ファイルの拡張子を取り出す
     $customName = !empty($_POST["custom_name"]) ? $_POST["custom_name"] : pathinfo($imageName, PATHINFO_FILENAME);
 
     // 公開フラグ（チェックボックスの状態に応じて1または0）
@@ -40,15 +40,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["image"])) {
     // 保存するファイルのフルパスを設定
     $targetFile = $targetDir . $imageName;
 
-    // 【重要】アップロードディレクトリが存在しない場合は作成
+    // アップロードディレクトリが存在しない場合は作成
     if (!is_dir($targetDir)) {
         mkdir($targetDir, 0777, true);  // 0777は読み書き実行可能な権限
     }
 
-    // 【セキュリティ対策】許可する画像のMIMEタイプを設定
+    // 許可する画像の形式を設定
     $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
 
-    // アップロードされたファイルのMIMEタイプを取得
+    // アップロードされたファイルの形式を取得
     $fileType = mime_content_type($_FILES["image"]["tmp_name"]);
 
     // 許可されたMIMEタイプでない場合はエラーメッセージを表示して処理を中断
@@ -60,7 +60,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["image"])) {
             // 【データベース登録】画像情報を `images` テーブルに追加
             $stmt = $conn->prepare("INSERT INTO images (image_id,image_name, public_flg) VALUES (1,?, ?)");
 
-            // クエリのプレースホルダに値をバインド（SQLインジェクション対策）
+            // クエリのプレースホルダに値をバインド
             $stmt->bind_param("si", $customName, $publicFlg);
 
             // SQL実行
@@ -87,7 +87,7 @@ $conn->close();
 <form action="work30.php" method="post" enctype="multipart/form-data">
     画像を選択: <input type="file" name="image" required> <!-- ファイル選択ボタン -->
     <br>
-    画像名（省略可）: <input type="text" name="custom_name" placeholder="画像の名前を入力（省略可）"> <!-- 画像名を任意で入力 -->
+    画像名（省略可）: <input type="text" name="custom_name" placeholder="画像の名前を入力"> <!-- 画像名を任意で入力 -->
     <br>
     <label><input type="checkbox" name="public_flg"> 公開する</label> <!-- 公開設定チェックボックス -->
     <br>

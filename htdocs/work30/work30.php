@@ -10,9 +10,9 @@
 <?php
 
 // データベース接続情報
-$servername = "localhost";  // サーバー名（ローカルホスト）
-$username = "xb513874_vfrg6";  // データベースのユーザー名
-$password = "7mumpav176";  // データベースのパスワード
+$servername = "localhost";  // サーバー名
+$username = "xb513874_vfrg6";  // ユーザー名
+$password = "7mumpav176";  // パスワード
 $dbname = "xb513874_t8tcu";  // データベース名
 
 // MySQLデータベースに接続
@@ -25,11 +25,11 @@ if ($conn->connect_error) {
 
 // フォームが送信され、画像がアップロードされた場合の処理
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["image"])) {
-
-    //画像名を取得
-    $image_name = $_POST['image_name'];
     // アップロードされたファイルの名前を取得
     $imageName = basename($_FILES["image"]["name"]);
+
+    // ユーザーが指定した画像名を取得（省略可）
+    $customName = !empty($_POST["custom_name"]) ? $_POST["custom_name"] : pathinfo($imageName, PATHINFO_FILENAME);
 
     // 公開フラグ（チェックボックスの状態に応じて1または0）
     $publicFlg = isset($_POST["public_flg"]) ? 1 : 0;
@@ -58,10 +58,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["image"])) {
         // 【ファイル移動】一時ファイルから指定のディレクトリに画像を保存
         if (move_uploaded_file($_FILES["image"]["tmp_name"], $targetFile)) {
             // 【データベース登録】画像情報を `images` テーブルに追加
-            $stmt = $conn->prepare("INSERT INTO images (image_name, public_flg) VALUES ($image_name, ?)");
+            $stmt = $conn->prepare("INSERT INTO images (image_id,image_name, public_flg) VALUES (1,?, ?)");
 
             // クエリのプレースホルダに値をバインド（SQLインジェクション対策）
-            // $stmt->bind_param("si", $imageName, $publicFlg);
+            $stmt->bind_param("si", $customName, $publicFlg);
 
             // SQL実行
             if ($stmt->execute()) {
@@ -85,9 +85,12 @@ $conn->close();
 
 <!-- 画像アップロードフォーム -->
 <form action="work30.php" method="post" enctype="multipart/form-data">
-    <input type="text" name="image_name"> <!--画像名-->
     画像を選択: <input type="file" name="image" required> <!-- ファイル選択ボタン -->
+    <br>
+    画像名（省略可）: <input type="text" name="custom_name" placeholder="画像の名前を入力（省略可）"> <!-- 画像名を任意で入力 -->
+    <br>
     <label><input type="checkbox" name="public_flg"> 公開する</label> <!-- 公開設定チェックボックス -->
+    <br>
     <input type="submit" value="アップロード"> <!-- アップロードボタン -->
 </form>
 

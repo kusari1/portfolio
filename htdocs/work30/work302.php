@@ -100,6 +100,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["image"])) {
     // ユーザーが入力した画像名があれば、それを使用。なければファイル名をそのまま使用
     $customName = !empty($_POST["custom_name"]) ? $_POST["custom_name"] : pathinfo($imageName, PATHINFO_FILENAME);
     
+    // ファイルの拡張子を取得
+    $fileExtension = pathinfo($_FILES["image"]["name"], PATHINFO_EXTENSION);
+
+    // ユーザーが入力した名前に拡張子を追加
+    $uniqueName = $customName . "." . $fileExtension; // 例えば、sample.png
+
     // 公開フラグ（チェックボックス）を取得
     $publicFlg = isset($_POST["public_flg"]) ? 1 : 0;
     
@@ -107,41 +113,51 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["image"])) {
     $currentDate = date("Y-m-d H:i:s");
 
     // 画像の保存先ディレクトリを設定
-$targetDir = "uploads/";
+    $targetDir = "uploads/";
+    
+    // 完全なファイルパスを設定
+    $targetFile = $targetDir . $uniqueName;
 
-// アップロードされたファイルの拡張子を取得
-$fileExtension = pathinfo($_FILES["image"]["name"], PATHINFO_EXTENSION);
-
-// 画像のユニークな名前を生成（重複を避けるため、拡張子を含む）
-$uniqueName = uniqid() . "." . $fileExtension;
-$targetFile = $targetDir . $uniqueName;
-
-// アップロードされた画像を指定の場所に移動
-if (move_uploaded_file($_FILES["image"]["tmp_name"], $targetFile)) {
-    // 画像情報をデータベースに挿入するSQL文
-    $stmt = $conn->prepare("INSERT INTO images (image_name, public_flg, create_date, update_date) VALUES (?, ?, ?, ?)");
-    $stmt->bind_param("siss", $uniqueName, $publicFlg, $currentDate, $currentDate); // パラメータをバインド
-
-    // SQL文を実行し、結果に応じてメッセージを表示
-    if ($stmt->execute()) {
-        echo "<p style='color: green;'>画像が正常にアップロードされました。</p>";
-    } else {
-        echo "<p style='color: red;'>データベース登録エラー: " . $stmt->error . "</p>";
+    // アップロード先ディレクトリが存在しない場合、作成する
+    if (!is_dir($targetDir)) {
+        mkdir($targetDir, 0777, true);
     }
 
-    // ステートメントを閉じる
-    $stmt->close();
-} else {
-    echo "<p style='color: red;'>画像のアップロードに失敗しました。</p>";
+    // アップロード可能な画像のMIMEタイプを指定
+    $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+    $fileType = mime_content_type($_FILES["image"]["tmp_name"]);
+
+    // アップロードされたファイルが許可されたタイプか確認
+    if (!in_array($fileType, $allowedTypes)) {
+        echo "エラー: JPEG、PNG、GIFの画像のみアップロードできます。";
+    } else {
+        // ファイルを指定の場所に移動
+        if (move_uploaded_file($_FILES["image"]["tmp_name"], $targetFile)) {
+            // 画像情報をデータベースに挿入するSQL文
+            $stmt = $conn->prepare("INSERT INTO images (image_name, public_flg, create_date, update_date) VALUES (?, ?, ?, ?)");
+            $stmt->bind_param("siss", $uniqueName, $publicFlg, $currentDate, $currentDate); // パラメータをバインド
+
+            // SQL文を実行し、結果に応じてメッセージを表示
+            if ($stmt->execute()) {
+                echo "<p style='color: green;'>画像が正常にアップロードされました。</p>";
+            } else {
+                echo "<p style='color: red;'>データベース登録エラー: " . $stmt->error . "</p>";
+            }
+
+            // ステートメントを閉じる
+            $stmt->close();
+        } else {
+            echo "<p style='color: red;'>画像のアップロードに失敗しました。</p>";
+        }
+    }
 }
 
-}
 
 ?>
 
 <!-- 画像アップロードフォーム -->
 <h2>画像アップロード</h2>
-<form action="work301.php" method="post" enctype="multipart/form-data">
+<form action="work302.php" method="post" enctype="multipart/form-data">
     <label>画像を選択:</label>
     <input type="file" name="image" required>
     <br><br>
@@ -180,7 +196,7 @@ if (move_uploaded_file($_FILES["image"]["tmp_name"], $targetFile)) {
             echo "<div class='image-item'>";
             echo "<img src='uploads/$imageName' alt='$imageName'>"; // 画像表示
             echo "<p class='$statusClass'>$statusText</p>"; // 公開・非公開の状態表示
-            echo "<form method='post' action='work301.php'>";
+            echo "<form method='post' action='work302.php'>";
             echo "<input type='hidden' name='toggle_id' value='$imageId'>"; // 画像ID
             echo "<input type='hidden' name='current_status' value='$publicFlg'>"; // 現在の公開状態
             echo "<button type='submit' class='toggle-btn $toggleClass'>$toggleText</button>"; // 状態切替ボタン
@@ -188,16 +204,16 @@ if (move_uploaded_file($_FILES["image"]["tmp_name"], $targetFile)) {
             echo "</div>";
         }
     } else {
-        echo "<p>画像がありません。</p>"; // 画像がない場合のメッセージ
+        echo "<p>画像がありません。</p>";
     }
-
-    // データベース接続を閉じる
-    $conn->close();
     ?>
 </div>
 
-<!-- 公開画像一覧ページへのリンク -->
-<a href="work30_gallery.php" class="link">公開画像一覧ページへ</a>
-
 </body>
 </html>
+
+<?php
+// データベース接続を閉じる
+$conn->close();
+?>
+

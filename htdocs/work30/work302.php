@@ -174,6 +174,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["image"])) {
     <input type="submit" value="アップロード">
 </form>
 
+<a href = "work30_gallery.php" class="link">画像一覧ページへ</a>
+
 <h2>アップロード済みの画像一覧</h2>
 <div class="image-container">
     <?php
@@ -195,6 +197,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["image"])) {
             // 画像の表示
             echo "<div class='image-item'>";
             echo "<img src='uploads/$imageName' alt='$imageName'>"; // 画像表示
+            echo "<p>$imageName</p>";
             echo "<p class='$statusClass'>$statusText</p>"; // 公開・非公開の状態表示
             echo "<form method='post' action='work302.php'>";
             echo "<input type='hidden' name='toggle_id' value='$imageId'>"; // 画像ID

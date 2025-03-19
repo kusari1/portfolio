@@ -84,6 +84,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["toggle_id"])) {
     // SQL文の実行結果に応じてメッセージを表示
     if ($stmt->execute()) {
         // ここでは何も表示しない（コメントアウトされています）
+        // echo "<p style='color: green;'>公開状態が更新されました。</p>";
     } else {
         echo "<p style='color: red;'>エラー: " . $stmt->error . "</p>";
     }
@@ -124,12 +125,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["image"])) {
     }
 
     // アップロード可能な画像のMIMEタイプを指定
-    $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+    $allowedTypes = ['image/jpeg', 'image/png'];
     $fileType = mime_content_type($_FILES["image"]["tmp_name"]);
 
     // アップロードされたファイルが許可されたタイプか確認
     if (!in_array($fileType, $allowedTypes)) {
-        echo "エラー: JPEG、PNG、GIFの画像のみアップロードできます。";
+        echo "エラー: JPEG、PNGの画像のみアップロードできます。";
     } else {
         // ファイルを指定の場所に移動
         if (move_uploaded_file($_FILES["image"]["tmp_name"], $targetFile)) {

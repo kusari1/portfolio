@@ -15,26 +15,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $conn = $db->connect();
 
     // ユーザー情報をデータベースから取得
-    $sql = "SELECT * FROM user_table WHERE user_name = :username AND password = :password";
+    $sql = "SELECT * FROM user_table WHERE user_name = :username";
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(':username', $username);
-    $stmt->bindParam(':password', $password); // パスワードは通常ハッシュ化して保存するべきですが、仮の処理です
     $stmt->execute();
 
     // ユーザーが見つかった場合
     if ($stmt->rowCount() > 0) {
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        // 管理者かどうかチェック
-        if ($user['user_name'] === 'ec_admin') {
-            // 管理者の場合、商品管理ページに遷移
-            header('Location: product_management.php');
-            exit();
+        // パスワードの一致を確認（ここではプレーンテキストで比較しています）
+        if ($user['password'] === $password) {
+            // 管理者かどうかチェック
+            if ($user['user_name'] === 'ec_admin') {
+                // 管理者の場合、商品管理ページに遷移
+                header('Location: product_management.php');
+                exit();
+            } else {
+                // 一般ユーザーの場合、商品一覧ページに遷移
+                $_SESSION['user_id'] = $user['user_id']; // ユーザーIDをセッションに保存
+                header('Location: product_list.php');
+                exit();
+            }
         } else {
-            // 一般ユーザーの場合、商品一覧ページに遷移
-            $_SESSION['user_id'] = $user['user_id']; // ユーザーIDをセッションに保存
-            header('Location: product_list.php');
-            exit();
+            // パスワードが間違っている場合
+            $error_message = "ユーザー名またはパスワードが間違っています。";
         }
     } else {
         // ユーザーが見つからない場合、エラーメッセージを表示
@@ -61,31 +66,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         .login-container {
             background: #fff;
-            padding: 20px;
+            padding: 20px 0;
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 300px;
+            width: 1024px;
             text-align: center;
+            position: relative;
+            padding-top: 120px;
         }
         .form-group {
             margin-bottom: 15px;
-            text-align: left;
+            text-align: center;
             width: 100%;
             box-sizing: border-box;
         }
         .form-group label {
-            display: block;
+            /* display: block; */
             font-weight: bold;
         }
         .form-group input {
-            width: calc(100% - 16px);
+            width: 300px;
             padding: 8px;
             border: 1px solid #ccc;
             border-radius: 4px;
             box-sizing: border-box;
         }
         button {
-            width: 100%;
+            width: 250px;
             padding: 10px;
             background-color: #28a745;
             color: #fff;
@@ -104,10 +111,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             color: red;
             font-size: 14px;
         }
+        .EC_logo{
+            background-color: #67cf7e;
+            width: 100%;
+            margin: 0;
+            text-align: left;
+            position: absolute;
+            top: 0;
+        }
     </style>
 </head>
 <body>
     <div class="login-container">
+        <h2 class="EC_logo">ECサイト</h2>
         <h2>ログイン</h2>
         <?php if (isset($error_message)): ?>
             <div class="error-message"><?php echo $error_message; ?></div>

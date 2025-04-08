@@ -1,49 +1,47 @@
 <?php
 session_start();
-require_once('include/config/const.php');  // const.php のインクルード
-require_once('include/model/db.php');  // DBクラスをインクルード
-  // DB接続ファイルのインクルード
+require_once('include/config/const.php');  // 設定ファイル
+require_once('include/model/db.php');  // DB接続ファイル
+
+$error_message = "";
 
 // フォームが送信されたときの処理
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // ユーザー名とパスワードの取得
     $username = $_POST['username'];
     $password = $_POST['password'];
 
-    // データベース接続
-    $db = new DB();
-    $conn = $db->connect();
-
-    // ユーザー情報をデータベースから取得
-    $sql = "SELECT * FROM user_table WHERE user_name = :username";
-    $stmt = $conn->prepare($sql);
-    $stmt->bindParam(':username', $username);
-    $stmt->execute();
-
-    // ユーザーが見つかった場合
-    if ($stmt->rowCount() > 0) {
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        // パスワードの一致を確認（ここではプレーンテキストで比較しています）
-        if ($user['password'] === $password) {
-            // 管理者かどうかチェック
-            if ($user['user_name'] === 'ec_admin') {
-                // 管理者の場合、商品管理ページに遷移
-                header('Location: product_management.php');
-                exit();
-            } else {
-                // 一般ユーザーの場合、商品一覧ページに遷移
-                $_SESSION['user_id'] = $user['user_id']; // ユーザーIDをセッションに保存
-                header('Location: product_list.php');
-                exit();
-            }
-        } else {
-            // パスワードが間違っている場合
-            $error_message = "ユーザー名またはパスワードが間違っています。";
-        }
+    // バリデーションチェック
+    if (!preg_match('/^[a-zA-Z0-9_]{5,}$/', $username)) {
+        $error_message = "ユーザー名は5文字以上の半角英数字とアンダースコア(_)のみ使用できます。";
+    } elseif (!preg_match('/^[a-zA-Z0-9_]{8,}$/', $password)) {
+        $error_message = "パスワードは8文字以上の半角英数字とアンダースコア(_)のみ使用できます。";
     } else {
-        // ユーザーが見つからない場合、エラーメッセージを表示
-        $error_message = "ユーザー名またはパスワードが間違っています。";
+        // データベース接続
+        $db = new DB();
+        $conn = $db->connect();
+
+        // ユーザー名の重複チェック
+        $sql = "SELECT COUNT(*) FROM user_table WHERE user_name = :username";
+        $stmt = $conn->prepare($sql);
+        $stmt->bindParam(':username', $username);
+        $stmt->execute();
+        $count = $stmt->fetchColumn();
+
+        if ($count > 0) {
+            $error_message = "このユーザー名は既に使用されています。";
+        } else {
+            // 新しいユーザーを登録
+            $sql = "INSERT INTO user_table (user_name, password, create_date, update_date) VALUES (:username, :password, NOW(), NOW())";
+            $stmt = $conn->prepare($sql);
+            $stmt->bindParam(':username', $username);
+            $stmt->bindParam(':password', $password);
+
+            if ($stmt->execute()) {
+                $success_message = "登録が完了しました。ログインページからログインしてください。";
+            } else {
+                $error_message = "登録に失敗しました。";
+            }
+        }
     }
 }
 ?>
@@ -53,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ログイン - ECサイト</title>
+    <title>ユーザー登録 - ECサイト</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -64,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             height: 100vh;
             margin: 0;
         }
-        .login-container {
+        .register-container {
             background: #fff;
             padding:0;
             border-radius: 5px;
@@ -75,20 +73,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             padding-top: 120px;
             padding-bottom: 120px;
         }
-
-        h2{
-            margin: 20px 0;
-        }
-
         .form-group {
             margin-bottom: 15px;
             text-align: center;
             width: 100%;
             box-sizing: border-box;
         }
+
         .form-group label {
-            /* display: block; */
-            font-weight: bold;
+             /* display: block; */
+             font-weight: bold;
         }
         .form-group input {
             width: 300px;
@@ -114,8 +108,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         p {
             margin: 16px 0;
         }
-        .error {
+        .message {
             color: red;
+            font-size: 14px;
+            /* margin-bottom: 10px; */
+        }
+        .success {
+            color: green;
             font-size: 14px;
         }
         .EC_logo{
@@ -129,24 +128,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             line-height: 60px;
             color: #eee;
         }
-        .error-message{
-            width: 50%;
-            background-color: pink;
-            margin: 20px auto;
-            padding: 20px 0;
-            font-weight: bold;
-            color: #D34C2C;
-        }
     </style>
 </head>
 <body>
-    <div class="login-container">
-        <h1 class="EC_logo">&nbsp;EC&nbsp;SITE</h1>
-        <h2>ログイン</h2>
-        <?php if (isset($error_message)): ?>
-            <div class="error-message"><?php echo $error_message; ?></div>
+    <div class="register-container">
+    <h1 class="EC_logo">&nbsp;EC&nbsp;SITE</h1>
+        <h2>ユーザー登録</h2>
+        <?php if ($error_message): ?>
+            <div class="message"><?php echo $error_message; ?></div>
         <?php endif; ?>
-        <form action="login.php" method="POST">
+        <?php if ($success_message): ?>
+            <div class="message success"><?php echo $success_message; ?></div>
+        <?php endif; ?>
+        <form action="register.php" method="POST">
             <div class="form-group">
                 <label for="username">ユーザー名：</label>
                 <input type="text" id="username" name="username" required>
@@ -155,9 +149,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <label for="password">パスワード：</label>
                 <input type="password" id="password" name="password" required>
             </div>
-            <button type="submit">ログイン</button>
+            <button type="submit">登録</button>
         </form>
-        <p>新規登録<a href="register.php">ページへ</a> </p>
+        <p>既にアカウントをお持ちの方は <a href="login.php">こちら</a> からログイン</p>
     </div>
 </body>
 </html>

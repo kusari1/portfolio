@@ -1,17 +1,18 @@
 <?php
-class DB {
-    private $host = 'localhost';  // ここはデータベースホストに合わせて変更
-    private $dbname = 'xb513874_t8tcu';  // データベース名
-    private $username = 'xb513874_vfrg6';  // データベースのユーザー名
-    private $password = '7mumpav176';  // データベースのパスワード
 
+require_once MODEL_PATH . 'functions.php'; // 必要ならfunctions.phpも読み込む
+require_once __DIR__ . '/../config/const.php';  // 定数読み込み
+
+class DB {
     private $conn;
 
     // データベース接続
     public function connect() {
         $this->conn = null;
         try {
-            $this->conn = new PDO("mysql:host={$this->host};dbname={$this->dbname}", $this->username, $this->password);
+            // const.phpで定義した定数を使用
+            $dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME;
+            $this->conn = new PDO($dsn, DB_USER, DB_PASS);
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
             echo "Connection error: " . $e->getMessage();

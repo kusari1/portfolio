@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             } else {
                 // 一般ユーザーの場合、商品一覧ページに遷移
                 $_SESSION['user_id'] = $user['user_id']; // ユーザーIDをセッションに保存
-                header('Location: product_list.php');
+                header('Location: user_item_list.php');
                 exit();
             }
         } else {

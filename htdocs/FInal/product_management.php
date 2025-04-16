@@ -35,29 +35,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_product'])) {
     }
 
     if (empty($errors)) {
-        // 画像ファイル名生成と保存
-        $extension = pathinfo($image['name'], PATHINFO_EXTENSION);
-        $safe_product_name = preg_replace('/[\\\\\/:*?"<>|]/u', '_', $product_name);
-        $image_name = $safe_product_name . '.' . $extension;
+        // 画像ファイル名保存
+        $image_name = uniqid() . '_' . basename($image['name']);
         $image_path = 'images/' . $image_name;
         move_uploaded_file($image['tmp_name'], $image_path);
-    
-        // データベースへの登録
+
+        // 商品テーブルに登録
         $stmt = $conn->prepare("INSERT INTO product_table (product_name, price, public_flg, create_date, update_date) VALUES (?, ?, ?, NOW(), NOW())");
         $stmt->execute([$product_name, $price, $public_flg]);
         $product_id = $conn->lastInsertId();
-    
+
+        // 在庫テーブルに登録
         $stmt = $conn->prepare("INSERT INTO stock_table (product_id, stock_qty, create_date, update_date) VALUES (?, ?, NOW(), NOW())");
         $stmt->execute([$product_id, $stock_qty]);
-    
+
+        // 画像テーブルに登録
         $stmt = $conn->prepare("INSERT INTO images_table (product_id, image_name, create_date, update_date) VALUES (?, ?, NOW(), NOW())");
         $stmt->execute([$product_id, $image_name]);
-    
-        // ✅ 成功時のみメッセージとリダイレクト
-        $_SESSION['success_message'] = '商品が正常に登録されました。';
-        header('Location: product_management.php');
-        exit;
-    }    
+
+        $messages[] = '商品が追加されました。';
+    }
 }
 
 // 在庫更新処理
@@ -138,25 +135,17 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <p class="errors"><?php echo htmlspecialchars($err); ?></p>
     <?php endforeach; ?>
 
-    <form method="POST" enctype="multipart/form-data" class="button_area">
+    <form method="POST" enctype="multipart/form-data">
         <h3>商品追加フォーム</h3>
         <p>商品名: <input type="text" name="product_name"></p>
-        <p>値段&emsp;: <input type="number" name="price" min="0"></p>
+        <p>値段: <input type="number" name="price" min="0"></p>
         <p>在庫数: <input type="number" name="stock_qty" min="0"></p>
-        <p>公開&emsp;: <input type="checkbox" name="public_flg" value="1"></p>
-        <p>画像&emsp;: <input type="file" name="product_image" accept="image/jpeg, image/png"></p>
+        <p>公開: <input type="checkbox" name="public_flg" value="1"></p>
+        <p>画像: <input type="file" name="product_image" accept="image/jpeg, image/png"></p>
         <p><button type="submit" name="add_product">商品追加</button></p>
     </form>
 
     <h3>商品一覧</h3>
-    <?php if (!empty($_SESSION['success_message'])): ?>
-    <p class="success-message" style="color: green; font-weight: bold;">
-    <?php
-        echo htmlspecialchars($_SESSION['success_message'], ENT_QUOTES, 'UTF-8');
-        unset($_SESSION['success_message']); // 一度表示したら削除
-    ?>
-    </p>
-    <?php endif; ?>
     <table>
         <tr>
             <th>画像</th>
@@ -198,7 +187,7 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <?php endforeach; ?>
     </table>
 
-    <p><a href="login.php">ログアウト</a></p>
+    <p><a href="logout.php">ログアウト</a></p>
 </div>
 </body>
 </html>

@@ -26,6 +26,13 @@ function fetch_all_query($db, $sql, $params = array()) {
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
+// 1件の結果を取得する関数（SELECT文用）
+function fetch_query($db, $sql, $params = array()) {
+    $stmt = $db->prepare($sql);
+    $stmt->execute($params); // パラメータをバインド
+    return $stmt->fetch(PDO::FETCH_ASSOC); // 1件のデータを返す
+}
+
 // セッションの開始
 function start_session() {
     if (session_status() == PHP_SESSION_NONE) {
@@ -71,5 +78,21 @@ function get_open_items($db) {
 
     return fetch_all_query($db, $sql);
 }
+
+// 正の整数かどうかを判定する関数
+function is_positive_integer($value) {
+    return (preg_match('/^[1-9][0-9]*$/', $value) === 1);
+}
+
+// SQLを実行（INSERT / UPDATE / DELETE）用の関数
+function execute_query($db, $sql, $params = array()) {
+    try {
+        $stmt = $db->prepare($sql);
+        return $stmt->execute($params);
+    } catch (PDOException $e) {
+        return false;
+    }
+}
+
 
 ?>

@@ -187,7 +187,7 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <?php endforeach; ?>
     </table>
 
-    <p><a href="logout.php">ログアウト</a></p>
+    <p><a href="login.php">ログアウト</a></p>
 </div>
 </body>
 </html>

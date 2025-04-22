@@ -66,13 +66,26 @@ $items = get_open_items($db);
             line-height: 60px;
         }
 
+        .EC_logo{
+            background-color: #67cf7e;
+            margin: 0;
+            text-align: left;
+            display: inline-block;
+            color: #eee;
+            margin-left: 20px;
+        }
+
+        .link-container{
+            margin-right: 20px;
+        }
+
         nav{
 
             display: flex;
             justify-content: space-between;
             flex-wrap: wrap;
-            height: 60px;
-            line-height: 60px;
+            height: 80px;
+            line-height: 80px;
         }
 
         nav a{
@@ -101,14 +114,6 @@ $items = get_open_items($db);
             margin-left: 100px;
         }
 
-        .EC_logo{
-            background-color: #67cf7e;
-            margin: 0;
-            text-align: left;
-            display: inline-block;
-            color: #eee;
-        }
-
         form{
             margin: 0 auto;
             width: 120px;
@@ -122,9 +127,9 @@ $items = get_open_items($db);
         <h1>商品一覧</h1>
         <nav>
             <h2 class="EC_logo">&nbsp;EC&nbsp;SITE</h2>
-            <div class = link-container>
+            <div class = "link-container">
                 <a href="cart.php">🛒 ショッピングカート</a>
-                <a href="logout.php">🚪 ログアウト</a>
+                <a href="login.php">🚪 ログアウト</a>
             </div>
         </nav>
     </header>

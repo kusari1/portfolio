@@ -49,6 +49,7 @@ $items = get_open_items($db);
             background-color: #f4f4f4;
             height: 100vh;
             margin: 0;
+            /* width: 1024px; */
         }
 
         header{
@@ -80,7 +81,6 @@ $items = get_open_items($db);
         }
 
         nav{
-
             display: flex;
             justify-content: space-between;
             flex-wrap: wrap;
@@ -95,15 +95,17 @@ $items = get_open_items($db);
         section {
             margin-top: 20px; /* 上に余白を追加 */
             display: flex;
+            width: 100%;
+            flex-wrap: wrap;
         }
 
         section .item {
-            margin: 0 10px;
+            margin: 10px 30px;
         }
 
         section .item img{
-            width: 400px;
-            height: 400px;
+            width: 300px;
+            height: 300px;
             display: block;
             border: 2px solid gray;
             box-sizing: border-box;
@@ -111,7 +113,10 @@ $items = get_open_items($db);
 
         section .item h2,p{
             display: inline-block;
-            margin-left: 100px;
+        }
+
+        section .item h2{
+            margin-right: 100px;
         }
 
         form{

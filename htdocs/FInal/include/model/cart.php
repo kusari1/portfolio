@@ -128,10 +128,10 @@ function update_item_stock($db, $product_id, $buy_qty) {
 // -------------------------------------------
 // カート内商品の合計金額を計算する
 // -------------------------------------------
-function calculate_total_price($items) {
+function calculate_total_price($cart_items) {
     $total = 0;
-    foreach ($items as $item) {
-        $total += $item['price'] * $item['product_qty'];
+    foreach ($cart_items as $item) {
+        $total += (int)$item['price'] * (int)$item['product_qty'];
     }
     return $total;
 }

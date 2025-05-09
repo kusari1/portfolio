@@ -2,27 +2,35 @@
 // cart.php
 
 // カートに商品を追加する
-function add_to_cart($db, $user_id, $product_id) {
-    // ユーザーIDと商品IDを元にカートに商品がすでに存在するか確認
+function add_to_cart($db, $user_id, $product_id, $quantity) {
+    // 数量が1以上であることを保証
+    $quantity = max(1, (int)$quantity);
+
+    // カート内にすでに商品があるか確認
     $sql = "SELECT * FROM cart_table WHERE user_id = :user_id AND product_id = :product_id";
     $stmt = $db->prepare($sql);
     $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
     $stmt->bindParam(':product_id', $product_id, PDO::PARAM_INT);
     $stmt->execute();
     
-    // すでにカートに追加されていない場合、カートに新規追加
     if ($stmt->rowCount() === 0) {
-        $sql = "INSERT INTO cart_table (user_id, product_id, product_qty, create_date, update_date) VALUES (:user_id, :product_id, 1, NOW(), NOW())";
+        // カートに商品がない場合、新規追加
+        $sql = "INSERT INTO cart_table (user_id, product_id, product_qty, create_date, update_date)
+                VALUES (:user_id, :product_id, :quantity, NOW(), NOW())";
         $stmt = $db->prepare($sql);
         $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
         $stmt->bindParam(':product_id', $product_id, PDO::PARAM_INT);
+        $stmt->bindParam(':quantity', $quantity, PDO::PARAM_INT);
         $stmt->execute();
         
         return 'カートに商品を追加しました。';
     } else {
-        // すでにカートにある場合、数量を更新
-        $sql = "UPDATE cart_table SET product_qty = product_qty + 1, update_date = NOW() WHERE user_id = :user_id AND product_id = :product_id";
+        // すでに存在する場合、数量を加算
+        $sql = "UPDATE cart_table 
+                SET product_qty = product_qty + :quantity, update_date = NOW()
+                WHERE user_id = :user_id AND product_id = :product_id";
         $stmt = $db->prepare($sql);
+        $stmt->bindParam(':quantity', $quantity, PDO::PARAM_INT);
         $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
         $stmt->bindParam(':product_id', $product_id, PDO::PARAM_INT);
         $stmt->execute();
@@ -30,6 +38,7 @@ function add_to_cart($db, $user_id, $product_id) {
         return 'カートの数量が更新されました。';
     }
 }
+
 
 // カートの中身を取得する
 function get_cart_items($db, $user_id) {
@@ -128,10 +137,10 @@ function update_item_stock($db, $product_id, $buy_qty) {
 // -------------------------------------------
 // カート内商品の合計金額を計算する
 // -------------------------------------------
-function calculate_total_price($items) {
+function calculate_total_price($cart_items) {
     $total = 0;
-    foreach ($items as $item) {
-        $total += $item['price'] * $item['product_qty'];
+    foreach ($cart_items as $item) {
+        $total += (int)$item['price'] * (int)$item['product_qty'];
     }
     return $total;
 }

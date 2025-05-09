@@ -1,0 +1,9 @@
+サイトマップ 構成図 ページ一覧
+
+ログインページ:login.php
+新規登録ページ:register.php
+商品管理ページ:product_management.php
+商品一覧ページ:user_item_list.php
+ショッピングカート:cart.php
+購入完了ページ:purchase_complete.php
+

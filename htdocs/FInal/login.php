@@ -29,6 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // 管理者かどうかチェック
             if ($user['user_name'] === 'ec_admin') {
                 // 管理者の場合、商品管理ページに遷移
+                $_SESSION['user_id'] = $user['user_id'];
                 header('Location: product_management.php');
                 exit();
             } else {
@@ -105,7 +106,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             border: none;
             border-radius: 4px;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 24px;
             margin-top: 5px;
         }
         button:hover {
@@ -137,6 +138,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             font-weight: bold;
             color: #D34C2C;
         }
+
+        h2{
+            margin: 10px 0;
+        }
     </style>
 </head>
 <body>
@@ -157,7 +162,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
             <button type="submit">ログイン</button>
         </form>
-        <p>新規登録<a href="register.php">ページへ</a> </p>
+        <p><a href="register.php">新規登録ページへ</a> </p>
     </div>
 </body>
 </html>

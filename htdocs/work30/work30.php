@@ -1,223 +1,139 @@
+<?php
+// データベース接続情報の設定
+$host = "localhost"; // サーバー名
+$user = "xb513874_vfrg6"; // ユーザー名
+$password = "7mumpav176"; // パスワード
+$dbname = "xb513874_t8tcu"; // データベース名
+
+// MySQLに接続
+$conn = new mysqli($host, $user, $password, $dbname);
+
+// 接続エラーチェック
+if ($conn->connect_error) {
+    die('データベース接続失敗: ' . $conn->connect_error);
+}
+
+$message = '';
+
+// 画像がアップロードされたか確認
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['image'])) {
+    $image = $_FILES['image'];
+    $publicFlg = 1; // 初期値として公開
+
+    // ユーザーが指定した名前を取得（未入力の場合はエラーメッセージ）
+    $imageName = isset($_POST['image_name']) ? trim($_POST['image_name']) : '';
+
+    if (empty($imageName)) {
+        $message = '画像の名前を入力してください。';
+    } else {
+        // アップロード成功かチェック
+        if ($image['error'] === UPLOAD_ERR_OK) {
+            $tmpName = $image['tmp_name'];
+            $originalName = basename($image['name']);
+            $ext = pathinfo($originalName, PATHINFO_EXTENSION);  // 拡張子を取得
+            $uniqueName = $imageName . '.' . $ext;  // ユーザー指定の名前 + 拡張子
+
+            $uploadDir = 'uploads/';
+            $uploadPath = $uploadDir . $uniqueName;
+
+            // アップロードディレクトリがなければ作成
+            if (!is_dir($uploadDir)) {
+                mkdir($uploadDir, 0777, true);
+            }
+
+            if (move_uploaded_file($tmpName, $uploadPath)) {
+                $date = date('Y-m-d');
+
+                // 画像情報をデータベースに挿入
+                $stmt = $conn->prepare("INSERT INTO images (public_flg, image_name, create_date, update_date) VALUES (?, ?, ?, ?)");
+                $stmt->bind_param("isss", $publicFlg, $uniqueName, $date, $date);
+                $stmt->execute();
+
+                $message = '画像をアップロードしました。';
+            } else {
+                $message = '画像の保存に失敗しました。';
+            }
+        } else {
+            $message = '画像のアップロード中にエラーが発生しました。';
+        }
+    }
+}
+
+// 公開・非公開切り替え処理
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_id'])) {
+    $toggleId = $_POST['toggle_id'];
+    $currentFlg = $_POST['current_flg'];
+    $newFlg = $currentFlg == 1 ? 0 : 1;
+    $updateDate = date('Y-m-d');
+
+    $stmt = $conn->prepare("UPDATE images SET public_flg = ?, update_date = ? WHERE image_id = ?");
+    $stmt->bind_param("isi", $newFlg, $updateDate, $toggleId);
+    $stmt->execute();
+
+    $message = '公開状態を変更しました。';
+}
+
+// 全画像を取得
+$result = $conn->query("SELECT * FROM images ORDER BY create_date DESC");
+$images = $result->fetch_all(MYSQLI_ASSOC);
+?>
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>画像アップロード</title>
     <style>
-        .image-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
+        ul{
+          list-style: none;  
         }
-        .image-item {
-            width: 200px;
+
+        ul li{
+            width: 350px;
+        }
+
+        ul li img{
+            width: 100%;
+            background-size: cover;
+        }
+
+        ul li p{
+            margin: 0;
             text-align: center;
         }
-        .image-item img {
-            width: 100%;
-            height: auto;
-            border-radius: 8px;
-        }
-        .public {
-            color: green;
-        }
-        .private {
-            color: red;
-        }
-        .link {
+
+        ul li form{
             display: block;
-            margin-top: 20px;
-        }
-        .toggle-btn {
-            display: inline-block;
-            padding: 5px 10px;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-        .toggle-public {
-            background-color: green;
-            color: white;
-        }
-        .toggle-private {
-            background-color: red;
-            color: white;
-        }
-        img{
-            display: inline-block;
-            margin: 0 10px;
+            text-align: center;
         }
     </style>
 </head>
-<body>    
+<body>
+    <h1>画像アップロード</h1>
+    <?php if ($message): ?>
+        <p><?php echo htmlspecialchars($message, ENT_QUOTES, 'UTF-8'); ?></p>
+    <?php endif; ?>
+    <form method="post" enctype="multipart/form-data">
+        <!-- ユーザー指定の画像名入力フィールド -->
+        <input type="text" name="image_name" placeholder="画像名" required>
+        <input type="file" name="image" required>
+        <button type="submit">アップロード</button>
+    </form>
 
-<?php
-
-// データベース接続情報の設定
-$servername = "localhost"; // サーバー名
-$username = "xb513874_vfrg6"; // ユーザー名
-$password = "7mumpav176"; // パスワード
-$dbname = "xb513874_t8tcu"; // データベース名
-
-// MySQLデータベースに接続
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// 接続エラーが発生した場合、エラーメッセージを表示して終了
-if ($conn->connect_error) {
-    die("接続失敗: " . $conn->connect_error);
-}
-
-// 公開・非公開の切り替え処理
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["toggle_id"])) {
-    // POSTデータから画像IDと現在の公開状態を取得
-    $imageId = intval($_POST["toggle_id"]);
-    $currentStatus = intval($_POST["current_status"]);
-    
-    // 公開状態を切り替える（公開→非公開 or 非公開→公開）
-    $newStatus = $currentStatus ? 0 : 1;
-
-    // 画像の公開・非公開を更新するSQL文
-    $stmt = $conn->prepare("UPDATE images SET public_flg = ?, update_date = NOW() WHERE image_id = ?");
-    $stmt->bind_param("ii", $newStatus, $imageId); // パラメータをバインド
-
-    // SQL文の実行結果に応じてメッセージを表示
-    if ($stmt->execute()) {
-        // ここでは何も表示しない（コメントアウトされています）
-        // echo "<p style='color: green;'>公開状態が更新されました。</p>";
-    } else {
-        echo "<p style='color: red;'>エラー: " . $stmt->error . "</p>";
-    }
-
-    // ステートメントを閉じる
-    $stmt->close();
-}
-
-// 画像アップロード処理
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["image"])) {
-    // アップロードされた画像のファイル名を取得
-    $imageName = basename($_FILES["image"]["name"]);
-    
-    // ユーザーが入力した画像名があれば、それを使用。なければファイル名をそのまま使用
-    $customName = !empty($_POST["custom_name"]) ? $_POST["custom_name"] : pathinfo($imageName, PATHINFO_FILENAME);
-    
-    // ファイルの拡張子を取得
-    $fileExtension = pathinfo($_FILES["image"]["name"], PATHINFO_EXTENSION);
-
-    // ユーザーが入力した名前に拡張子を追加
-    $uniqueName = $customName . "." . $fileExtension; // 例えば、sample.png
-
-    // 公開フラグ（チェックボックス）を取得
-    $publicFlg = isset($_POST["public_flg"]) ? 1 : 0;
-    
-    // 現在の日付と時間を取得
-    $currentDate = date("Y-m-d H:i:s");
-
-    // 画像の保存先ディレクトリを設定
-    $targetDir = "uploads/";
-    
-    // 完全なファイルパスを設定
-    $targetFile = $targetDir . $uniqueName;
-
-    // アップロード先ディレクトリが存在しない場合、作成する
-    if (!is_dir($targetDir)) {
-        mkdir($targetDir, 0777, true);
-    }
-
-    // アップロード可能な画像のMIMEタイプを指定
-    $allowedTypes = ['image/jpeg', 'image/png'];
-    $fileType = mime_content_type($_FILES["image"]["tmp_name"]);
-
-    // アップロードされたファイルが許可されたタイプか確認
-    if (!in_array($fileType, $allowedTypes)) {
-        echo "エラー: JPEG、PNGの画像のみアップロードできます。";
-    } else {
-        // ファイルを指定の場所に移動
-        if (move_uploaded_file($_FILES["image"]["tmp_name"], $targetFile)) {
-            // 画像情報をデータベースに挿入するSQL文
-            $stmt = $conn->prepare("INSERT INTO images (image_name, public_flg, create_date, update_date) VALUES (?, ?, ?, ?)");
-            $stmt->bind_param("siss", $uniqueName, $publicFlg, $currentDate, $currentDate); // パラメータをバインド
-
-            // SQL文を実行し、結果に応じてメッセージを表示
-            if ($stmt->execute()) {
-                echo "<p style='color: green;'>画像が正常にアップロードされました。</p>";
-            } else {
-                echo "<p style='color: red;'>データベース登録エラー: " . $stmt->error . "</p>";
-            }
-
-            // ステートメントを閉じる
-            $stmt->close();
-        } else {
-            echo "<p style='color: red;'>画像のアップロードに失敗しました。</p>";
-        }
-    }
-}
-
-
-?>
-
-<!-- 画像アップロードフォーム -->
-<h2>画像アップロード</h2>
-<form action="work30.php" method="post" enctype="multipart/form-data">
-    <label>画像を選択:</label>
-    <input type="file" name="image" required>
-    <br><br>
-
-    <label>画像名:</label>
-    <input type="text" name="custom_name" placeholder="画像の名前を入力">
-    <br><br>
-
-    <label>
-        <input type="checkbox" name="public_flg"> 公開する
-    </label>
-    <br><br>
-
-    <input type="submit" value="アップロード">
-</form>
-
-<a href = "work30_gallery.php" class="link">画像一覧ページへ</a>
-
-<h2>アップロード済みの画像一覧</h2>
-<div class="image-container">
-    <?php
-    // 画像情報をデータベースから取得するSQL文
-    $sql = "SELECT image_id, image_name, public_flg FROM images ORDER BY create_date DESC";
-    $result = $conn->query($sql);
-
-    // 結果があれば、画像ごとに表示
-    if ($result->num_rows > 0) {
-        while($row = $result->fetch_assoc()) {
-            $imageId = $row["image_id"]; // 画像ID
-            $imageName = $row["image_name"]; // 画像ファイル名
-            $publicFlg = $row["public_flg"]; // 公開・非公開フラグ
-            $statusClass = $publicFlg ? "public" : "private"; // 公開・非公開に応じたクラス名
-            $statusText = $publicFlg ? "公開中" : "非公開"; // 公開・非公開の状態テキスト
-            $toggleText = $publicFlg ? "非公開にする" : "公開にする"; // ボタンのテキスト
-            $toggleClass = $publicFlg ? "toggle-private" : "toggle-public"; // ボタンのクラス名
-
-            // 画像の表示
-            echo "<div class='image-item'>";
-            echo "<img src='uploads/$imageName' alt='$imageName'>"; // 画像表示
-            echo "<p>$imageName</p>";
-            echo "<p class='$statusClass'>$statusText</p>"; // 公開・非公開の状態表示
-            echo "<form method='post' action='work30.php'>";
-            echo "<input type='hidden' name='toggle_id' value='$imageId'>"; // 画像ID
-            echo "<input type='hidden' name='current_status' value='$publicFlg'>"; // 現在の公開状態
-            echo "<button type='submit' class='toggle-btn $toggleClass'>$toggleText</button>"; // 状態切替ボタン
-            echo "</form>";
-            echo "</div>";
-        }
-    } else {
-        echo "<p>画像がありません。</p>";
-    }
-    ?>
-</div>
-
+    <h2>アップロード済み画像</h2>
+    <ul>
+        <?php foreach ($images as $img): ?>
+            <li>
+                <img src="uploads/<?php echo htmlspecialchars($img['image_name'], ENT_QUOTES, 'UTF-8'); ?>" width="200">
+                <p>公開状態: <?php echo $img['public_flg'] == 1 ? '公開' : '非公開'; ?></p>
+                <form method="post">
+                    <input type="hidden" name="toggle_id" value="<?php echo $img['image_id']; ?>">
+                    <input type="hidden" name="current_flg" value="<?php echo $img['public_flg']; ?>">
+                    <button type="submit"><?php echo $img['public_flg'] == 1 ? '非公開にする' : '公開にする'; ?></button>
+                </form>
+            </li>
+        <?php endforeach; ?>
+    </ul>
+    <a class="link" href="work30_gallery.php">画像ギャラリーへ</a>
 </body>
 </html>
-
-<?php
-// データベース接続を閉じる
-$conn->close();
-?>
-

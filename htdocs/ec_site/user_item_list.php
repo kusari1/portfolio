@@ -124,7 +124,7 @@ $items = get_open_items($db);
         }
 
         section .item h2,section .item p{
-            font-size: 1.5em;
+            font-size: 1.2em;
             margin: 0;
         }
 

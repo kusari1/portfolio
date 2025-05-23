@@ -1,7 +1,7 @@
 <?php
 session_start();
-require_once('include/config/const.php');  // 設定ファイル
-require_once('include/model/db.php');  // DB接続ファイル
+require_once('../../include/config/const.php');  // 設定ファイル
+require_once('../../include/model/db.php');  // DB接続ファイル
 
 $error_message = "";
 
@@ -145,6 +145,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php if ($success_message): ?>
             <div class="message success"><?php echo $success_message; ?></div>
         <?php endif; ?>
+        <script>
+                // ページが読み込まれたときに処理を開始
+                document.addEventListener('DOMContentLoaded', function() {
+                // フォーム要素を取得
+                const form = document.querySelector('form');
+                // 入力欄（ユーザー名とパスワード）を取得
+                const usernameInput = document.getElementById('username');
+                const passwordInput = document.getElementById('password');
+
+                // フォームが送信されるタイミングで処理を実行
+                form.addEventListener('submit', function(event) {
+                // 入力値を取得し、前後の空白を除去
+                let username = usernameInput.value.trim();
+                let password = passwordInput.value.trim();
+                let error = ''; // エラーメッセージ用の変数
+
+                // ユーザー名の形式チェック（5文字以上、半角英数字とアンダースコアのみ）
+                if (!/^[a-zA-Z0-9_]{5,}$/.test(username)) {
+                    error = "ユーザー名は5文字以上の半角英数字とアンダースコア(_)のみ使用できます。";
+                } 
+                // パスワードの形式チェック（8文字以上、半角英数字とアンダースコアのみ）
+                else if (!/^[a-zA-Z0-9_]{8,}$/.test(password)) {
+                        error = "パスワードは8文字以上の半角英数字とアンダースコア(_)のみ使用できます。";
+                }
+
+                // エラーがある場合は送信を中止し、エラーメッセージを表示
+                if (error !== '') {
+                    event.preventDefault(); // フォーム送信をキャンセル
+                    alert(error); // アラートでユーザーにエラーを通知
+                    }
+                });
+            });
+        </script>
         <form action="register.php" method="POST">
             <div class="form-group">
                 <label for="username">ユーザー名：</label>

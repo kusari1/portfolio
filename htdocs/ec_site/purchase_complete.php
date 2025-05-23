@@ -1,5 +1,6 @@
 <?php
-require_once 'include/config/const.php';
+
+require_once __DIR__ . '/../../include/config/const.php';
 require_once MODEL_PATH . 'functions.php';
 require_once MODEL_PATH . 'db.php';
 require_once MODEL_PATH . 'user.php';

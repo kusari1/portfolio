@@ -1,7 +1,7 @@
 <?php
 session_start();
-require_once('include/config/const.php');  // const.php のインクルード
-require_once('include/model/db.php');  // DBクラスをインクルード
+require_once('../../include/config/const.php');
+require_once('../../include/model/db.php');
   // DB接続ファイルのインクルード
 
 // フォームが送信されたときの処理

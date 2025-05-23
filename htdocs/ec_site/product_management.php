@@ -1,7 +1,7 @@
 <?php
 session_start();
-require_once('include/config/const.php');
-require_once('include/model/db.php');
+require_once('../../include/config/const.php');
+require_once('../../include/model/db.php');
 
 // ログインしていない場合はログインページへリダイレクト
 if (!isset($_SESSION['user_id'])) {
@@ -25,11 +25,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_product'])) {
     $public_flg = isset($_POST['public_flg']) ? 1 : 0;
     $image = $_FILES['product_image'];
 
-    // 入力チェック
-    if ($product_name === '' || $price === '' || $stock_qty === '' || $image['name'] === '') {
-        $errors[] = '全ての項目を入力してください。';
-    } elseif (!preg_match('/^\d+$/', $price) || !preg_match('/^\d+$/', $stock_qty)) {
-        $errors[] = '値段と在庫数は0以上の整数を入力してください。';
+        // 入力チェック（個別に）
+    if ($product_name === '') {
+        $errors[] = '商品名を入力してください。';
+    }
+    if ($price === '') {
+        $errors[] = '価格を入力してください。';
+    } elseif (!preg_match('/^\d+$/', $price)) {
+        $errors[] = '価格は0以上の整数で入力してください。';
+    }
+    if ($stock_qty === '') {
+        $errors[] = '在庫数を入力してください。';
+    } elseif (!preg_match('/^\d+$/', $stock_qty)) {
+        $errors[] = '在庫数は0以上の整数で入力してください。';
+    }
+    if ($image['name'] === '') {
+        $errors[] = '商品画像を選択してください。';
     } elseif (!in_array(mime_content_type($image['tmp_name']), ['image/jpeg', 'image/png'])) {
         $errors[] = '画像はJPEGまたはPNG形式のみ対応しています。';
     }
@@ -123,6 +134,50 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
         th, td { border: 3px double #000;  padding: 8px; text-align: center; }
         img { max-width: 100px; }
     </style>
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+    const form = document.querySelector('form');
+    const productName = form.querySelector('input[name="product_name"]');
+    const price = form.querySelector('input[name="price"]');
+    const stockQty = form.querySelector('input[name="stock_qty"]');
+    const image = form.querySelector('input[name="product_image"]');
+    
+    const errorContainer = document.createElement('ul');
+    errorContainer.style.color = 'red';
+    form.insertBefore(errorContainer, form.firstChild);
+
+    form.addEventListener('submit', function (e) {
+        errorContainer.innerHTML = ''; // リセット
+        let errors = [];
+
+        if (productName.value.trim() === '') {
+            errors.push('商品名を入力してください。');
+        }
+        if (price.value === '') {
+            errors.push('価格を入力してください。');
+        } else if (!/^\d+$/.test(price.value)) {
+            errors.push('価格は0以上の整数で入力してください。');
+        }
+        if (stockQty.value === '') {
+            errors.push('在庫数を入力してください。');
+        } else if (!/^\d+$/.test(stockQty.value)) {
+            errors.push('在庫数は0以上の整数で入力してください。');
+        }
+        if (image.files.length === 0) {
+            errors.push('商品画像を選択してください。');
+        }
+
+        if (errors.length > 0) {
+            e.preventDefault(); // 送信停止
+            errors.forEach(err => {
+                const li = document.createElement('li');
+                li.textContent = err;
+                errorContainer.appendChild(li);
+            });
+        }
+    });
+});
+</script>
 </head>
 <body>
 <div class="container">

@@ -13,12 +13,16 @@ if (!isset($_SESSION['user_id'])) {
 $db = new DB();
 $conn = $db->connect();
 
-// メッセージ格納用
-$errors = [];
-$messages = [];
+// セッションからメッセージを取得して初期化
+$errors = $_SESSION['errors'] ?? [];
+$messages = $_SESSION['messages'] ?? [];
+unset($_SESSION['errors'], $_SESSION['messages']);
 
 // 商品追加処理
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_product'])) {
+    $errors = [];
+    $messages = [];
+
     $product_name = trim($_POST['product_name']);
     $price = $_POST['price'];
     $stock_qty = $_POST['stock_qty'];
@@ -53,10 +57,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_product'])) {
 
         $messages[] = '商品が追加されました。';
     }
+
+    // メッセージをセッションへセットしてリダイレクト
+    $_SESSION['errors'] = $errors;
+    $_SESSION['messages'] = $messages;
+    header('Location: ' . $_SERVER['PHP_SELF']);
+    exit();
 }
 
 // 在庫数更新
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_stock'])) {
+    $errors = [];
+    $messages = [];
+
     $stock_id = $_POST['stock_id'];
     $new_stock = $_POST['stock_qty'];
 
@@ -67,19 +80,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_stock'])) {
         $stmt->execute([$new_stock, $stock_id]);
         $messages[] = '在庫数が更新されました。';
     }
+
+    $_SESSION['errors'] = $errors;
+    $_SESSION['messages'] = $messages;
+    header('Location: ' . $_SERVER['PHP_SELF']);
+    exit();
 }
 
 // 公開ステータス変更
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['toggle_public'])) {
+    $errors = [];
+    $messages = [];
+
     $product_id = $_POST['product_id'];
     $new_status = $_POST['public_flg'];
     $stmt = $conn->prepare("UPDATE product_table SET public_flg = ?, update_date = NOW() WHERE product_id = ?");
     $stmt->execute([$new_status, $product_id]);
     $messages[] = '公開ステータスを変更しました。';
+
+    $_SESSION['errors'] = $errors;
+    $_SESSION['messages'] = $messages;
+    header('Location: ' . $_SERVER['PHP_SELF']);
+    exit();
 }
 
 // 商品削除
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_product'])) {
+    $errors = [];
+    $messages = [];
+
     $product_id = $_POST['product_id'];
     $stmt = $conn->prepare("DELETE FROM product_table WHERE product_id = ?");
     $stmt->execute([$product_id]);
@@ -91,6 +120,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_product'])) {
     $stmt->execute([$product_id]);
 
     $messages[] = '商品を削除しました。';
+
+    $_SESSION['errors'] = $errors;
+    $_SESSION['messages'] = $messages;
+    header('Location: ' . $_SERVER['PHP_SELF']);
+    exit();
 }
 
 // 商品一覧取得

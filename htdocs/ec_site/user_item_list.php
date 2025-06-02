@@ -18,17 +18,25 @@ $db = (new DB())->connect();
 $user = get_login_user($db);
 
 // POSTで商品追加
-$message = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $item_id = (int)get_post('item_id');
     $quantity = (int)get_post('quantity');
 
     if ($item_id > 0 && $quantity > 0) {
-        $message = add_to_cart($db, $user['user_id'], $item_id, $quantity);
+        // カート追加メッセージをセッションに保存
+        $_SESSION['message'] = add_to_cart($db, $user['user_id'], $item_id, $quantity);
     } else {
-        $message = '商品または数量が不正です。';
+        $_SESSION['message'] = '商品または数量が不正です。';
     }
+
+    // PRG: 処理後にリダイレクト（GET）
+    header('Location: ' . $_SERVER['PHP_SELF']);
+    exit;
 }
+
+// GET時はメッセージをセッションから取得して消す
+$message = $_SESSION['message'] ?? '';
+unset($_SESSION['message']);
 
 // 公開商品取得
 $items = get_open_items($db);

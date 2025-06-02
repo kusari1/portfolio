@@ -93,7 +93,7 @@ $total_price = calculate_total_price($cart_items);
         .message {
             color: green;
             text-align: center;
-            width: 450px;
+            width: 700px;
             background-color: #fff352;
             font-size: 30px;
             margin: 20px auto;
@@ -118,7 +118,7 @@ $total_price = calculate_total_price($cart_items);
 <?php if (isset($error_message)): ?>
     <p class="error"><?php print h($error_message); ?></p>
 <?php else: ?>
-    <p class="message">ご購入ありがとうございました！</p>
+    <p class="message">購入が完了しました、ありがとうございました！</p>
 
     <section class="complete">
         <?php foreach ($cart_items as $item): ?>

@@ -1,0 +1,73 @@
+body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            height: 100vh;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        header{
+            background: #a7af7e;
+        }
+
+        p{
+          margin: 0;
+        }
+
+        header h1{
+          margin: 0;
+          height: 60px;
+          line-height: 60px;
+          margin-top: 10px;
+          color: #f4f4f4;
+          text-align: center;
+        }
+
+        nav{
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            height: 80px;
+            line-height: 80px;
+            background-color: #67cf7e;
+            padding: 0 20px;
+            border-top: 2px solid black;
+        }
+
+        nav a{
+            text-align: right;
+        }
+
+        .EC_logo{
+            margin: 0;
+            text-align: left;
+            display: inline-block;
+            color: #eee;
+        }
+
+        .item {
+            border: 1px solid #ddd;
+            background: #fff;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .item img {
+            height: 100px;
+        }
+        .error {
+            color: red;
+        }
+        .message {
+            color: green;
+            text-align: center;
+            width: 700px;
+            background-color: #fff352;
+            font-size: 30px;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 4px;
+        }
+
+        .actions { font-weight: bold; }
+        
+        .link-container a { margin-right: 15px; }

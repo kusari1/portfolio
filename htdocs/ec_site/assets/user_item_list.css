@@ -1,0 +1,100 @@
+body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            height: 100vh;
+            margin: 0;
+            /* width: 1024px; */
+        }
+
+        header{
+            background: #67cf7e;
+            position: sticky; /* ここに注目! */
+            top: 0;
+        }
+
+        header h1{
+            background: #a7af7e;
+            text-align: center;
+            color: #f4f4f4;
+            margin-top: 10px;
+            margin-bottom: 0px;
+            border-bottom: 2px solid black;
+            height: 60px;
+            line-height: 60px;
+        }
+
+        .EC_logo{
+            background-color: #67cf7e;
+            margin: 0;
+            text-align: left;
+            display: inline-block;
+            color: #eee;
+            margin-left: 20px;
+        }
+
+        .link-container{
+            margin-right: 20px;
+        }
+
+        nav{
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            height: 80px;
+            line-height: 80px;
+        }
+
+        nav a{
+            text-align: right;
+        }
+
+        section {
+            margin-top: 20px; /* 上に余白を追加 */
+            display: flex;
+            width: 100%;
+            flex-wrap: wrap;
+        }
+
+        section .item {
+            margin: 10px 30px;
+        }
+
+        section .item img{
+            width: 300px;
+            height: 300px;
+            display: block;
+            border: 2px solid gray;
+            box-sizing: border-box;
+        }
+
+        .item_container{
+            width: 300px;
+        }
+
+        section .item img:hover{
+            background-color: #E0E0E0;
+            cursor: pointer;
+        }
+
+        section .item h2,section .item p{
+            font-size: 1.2em;
+            margin: 0;
+        }
+
+        form{
+            margin: 0 auto;
+            width: 300px;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        form input{
+            width: 20%;
+            font-size: 20px;
+        }
+
+        form button{
+            width: 70%;
+            font-size: 20px;
+        }

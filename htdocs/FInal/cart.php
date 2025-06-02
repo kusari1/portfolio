@@ -116,7 +116,7 @@ $total_price = calculate_total_price($cart_items);
             text-align: right;
         }
 
-        .EC_logo{
+        .ec_logo{
             margin: 0;
             text-align: left;
             display: inline-block;
@@ -131,9 +131,30 @@ $total_price = calculate_total_price($cart_items);
             background: #fff;
             padding: 10px;
             margin-bottom: 10px;
+            font-size: 1.5em;
         }
         .item img {
             height: 100px;
+        }
+
+        .item_input{
+            height: 34px;
+            margin-top: 15px;
+        }
+
+        .item_input input {
+            font-size: 20px;
+            height: 100%;
+            line-height: 34px;
+            box-sizing: border-box;
+        }
+
+        .item_input button {
+            font-size: 20px;
+            height: 100%;
+            box-sizing: border-box;
+            padding: 0 10px;
+            vertical-align: middle;
         }
 
         .cart{
@@ -179,7 +200,7 @@ $total_price = calculate_total_price($cart_items);
 <header>
     <h1>ショッピングカート</h1>
     <nav>
-        <h2 class="EC_logo">&nbsp;EC&nbsp;SITE</h2>
+        <h2 class="ec_logo">&nbsp;EC&nbsp;SITE</h2>
           <div class = "link-container">
             <a href="user_item_list.php">🛍️商品一覧へ戻る</a>
             <a href="login.php">🚪ログアウト</a>
@@ -203,7 +224,7 @@ $total_price = calculate_total_price($cart_items);
                 <h2><?php print h($item['product_name']); ?></h2>
                 <p>価格: <?php print h($item['price']); ?>円</p>
                 <p>小計: <?php print h($item['price'] * $item['product_qty']); ?>円</p>
-                <form method="post">
+                <form method="post" class="item_input">
                     <input type="hidden" name="product_id" value="<?php print h($item['product_id']); ?>">
                     <input type="number" name="new_qty" value="<?php print h($item['product_qty']); ?>" min="1">
                     <button type="submit" name="update_qty">数量変更</button>

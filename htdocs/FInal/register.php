@@ -99,7 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             border: none;
             border-radius: 4px;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 24px;
             margin-top: 5px;
         }
         button:hover {
@@ -128,6 +128,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             line-height: 60px;
             color: #eee;
         }
+
+        h2,h3{
+            margin: 5px 0;
+        }
+
     </style>
 </head>
 <body>
@@ -144,14 +149,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="form-group">
                 <label for="username">ユーザー名：</label>
                 <input type="text" id="username" name="username" required>
+                <h3>[ユーザー名]は5文字以上の半角英数字とアンダースコア(_)のみ使用できます。</h3>
             </div>
             <div class="form-group">
                 <label for="password">パスワード：</label>
                 <input type="password" id="password" name="password" required>
+                <h3>[パスワード]は8文字以上の半角英数字とアンダースコア(_)のみ使用できます。</h3>
             </div>
             <button type="submit">登録</button>
         </form>
-        <p>既にアカウントをお持ちの方は <a href="login.php">こちら</a> からログイン</p>
+        <p><a href="login.php">既にアカウントをお持ちの方はこちらからログイン</a></p>
     </div>
 </body>
 </html>

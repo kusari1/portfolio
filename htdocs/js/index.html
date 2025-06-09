@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>簡易ピアノアプリ実験版</title>
+    <style>
+        .piano{
+            width: 600px;
+            height: 300px;
+            margin-top: 20px;
+            background-color: #fff;
+            padding-top: 20px;
+        }
+
+        .songDisplay {
+            width: 500px;
+            height: 80px;
+            background-color: #0AA;
+            margin: 20px auto;
+            color: white;
+            font-size: 24px;
+            text-align: center;
+            line-height: 80px;
+        }
+
+        .noteDisplay {
+            width: 500px;
+            height: 160px;
+            background-color: #0AA;
+            margin: 20px auto;
+            color: white;
+            font-size: 24px;
+            text-align: center;
+            line-height: 160px;
+        }
+
+        .keyboard {
+            width: 490px;
+            height: 80px;
+            background-color: #fff;
+            margin: 20px auto;
+            display: flex;
+        }
+
+        .key {
+            width: calc(100% / 7 - 10px);
+            height: 90px;
+            margin: 0 5px;
+            border-radius: 2px;
+            border-color: #FAA;
+            text-align: center;
+            font-size: 18px;
+        }
+
+        .button1 {
+            width: 300px;
+            height: 80px;
+            margin: 10px auto;
+        }
+
+        .but1 {
+            width: calc(100% - 20px);
+            height: 35px;
+            background-color: #0AA;
+            color: #ff69b4;
+            font-size: 15px;
+            margin-bottom: 5px;
+        }
+
+        .link-container {
+            width: 600px;
+            margin-top: 160px;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="piano">
+        <div class="songDisplay" id="songDisplay"></div>
+        <div class="noteDisplay" id="noteDisplay"></div>
+        <div class="keyboard">
+            <input type="button" value="ド" id="C4" class="key">
+            <input type="button" value="レ" id="D4" class="key">
+            <input type="button" value="ミ" id="E4" class="key">
+            <input type="button" value="ファ" id="F4" class="key">
+            <input type="button" value="ソ" id="G4" class="key">
+            <input type="button" value="ラ" id="A4" class="key">
+            <input type="button" value="シ" id="B4" class="key">
+            <input type="button" value="ド" id="C5" class="key">
+        </div>
+        <div class="button1">
+            <input type="button" id="autoplayButton" class="but1" value="自動演奏">
+        </div>
+    </div>
+    <div class="link-container">
+        <a href="https://portfolio02.dc-itex.com/nakano/0005/ec_site/login.php"><h4>PHP:ECサイト</h4></a>
+        <a href="https://portfolio02.dc-itex.com/nakano/0005/wp/"><h4>WordPress:架空Webサイト</h4></a>
+        <a href="https://portfolio02.dc-itex.com/nakano/0005/self_introduction/#syoukai"><h4>自己紹介サイト</h4></a>
+    </div>
+    <script>
+
+        const autoplayButton = document.getElementById('autoplayButton');
+        const keys = Array.from(document.querySelectorAll('.key'));
+        const noteDisplay = document.getElementById('noteDisplay');
+        const songDisplay = document.getElementById('songDisplay');
+
+        let audioCtx;
+        let isPlaying = false;
+        let currentNoteIndex = 0;
+        let timeoutid;
+        let RandomMusic = 0;
+
+        // 音階を格納する配列を定義する
+        // const noteNames = ['ド(低音)', 'レ', 'ミ', 'ファ', 'ソ', 'ラ', 'シ', 'ド(高音)'];
+
+        const noteMap = {
+            C4: { freq: 261, label: 'ド' },
+            D4: { freq: 293, label: 'レ' },
+            E4: { freq: 329, label: 'ミ' },
+            F4: { freq: 349, label: 'ファ' },
+            G4: { freq: 392, label: 'ソ' },
+            A4: { freq: 440, label: 'ラ' },
+            B4: { freq: 493, label: 'シ' },
+            C5: { freq: 523, label: 'ド' },
+            Rest: { freq: null, label: '' } // 休符用
+        };
+
+        // 楽譜データ
+        const songs = [
+         {
+            title: 'きらきら星',
+            notes: [
+            { note: 'C4', duration: 500 },
+            { note: 'Rest', duration: 500 },
+            { note: 'C4', duration: 500 },
+            { note: 'Rest', duration: 500 },
+            { note: 'G4', duration: 500 },
+            { note: 'Rest', duration: 500 },
+            { note: 'G4', duration: 500 },
+            { note: 'Rest', duration: 500 },
+            { note: 'A4', duration: 500 },
+            { note: 'Rest', duration: 500 },
+            { note: 'A4', duration: 500 },
+            { note: 'Rest', duration: 500 },
+            { note: 'G4', duration: 1000 },
+            { note: 'Rest', duration: 500 },
+            { note: 'F4', duration: 500 },
+            { note: 'Rest', duration: 500 },
+            { note: 'F4', duration: 500 },
+            { note: 'Rest', duration: 500 },
+            { note: 'E4', duration: 500 },
+            { note: 'Rest', duration: 500 },
+            { note: 'E4', duration: 500 },
+            { note: 'Rest', duration: 500 },
+            { note: 'D4', duration: 500 },
+            { note: 'Rest', duration: 500 },
+            { note: 'D4', duration: 500 },
+            { note: 'Rest', duration: 500 },
+            { note: 'C4', duration: 1000 },
+            //
+            { note: 'G4', duration: 500 },
+            { note: 'Rest', duration: 500 },
+            { note: 'G4', duration: 500 },
+            { note: 'Rest', duration: 500 },
+            { note: 'F4', duration: 500 },
+            { note: 'Rest', duration: 500 },
+            { note: 'F4', duration: 500 },
+            { note: 'Rest', duration: 500 },
+            { note: 'E4', duration: 500 },
+            { note: 'Rest', duration: 500 },
+            { note: 'E4', duration: 500 },
+            { note: 'Rest', duration: 500 },
+            { note: 'D4', duration: 1000 },
+            { note: 'Rest', duration: 500 },
+            { note: 'G4', duration: 500 },
+            { note: 'Rest', duration: 500 },
+            { note: 'G4', duration: 500 },
+            { note: 'Rest', duration: 500 },
+            { note: 'F4', duration: 500 },
+            { note: 'Rest', duration: 500 },
+            { note: 'F4', duration: 500 },
+            { note: 'Rest', duration: 500 },
+            { note: 'E4', duration: 500 },
+            { note: 'Rest', duration: 500 },
+            { note: 'E4', duration: 500 },
+            { note: 'Rest', duration: 500 },
+            { note: 'D4', duration: 1000 },
+            { note: 'Rest', duration: 500 },
+            //
+            { note: 'C4', duration: 500 },
+            { note: 'Rest', duration: 500 },
+            { note: 'C4', duration: 500 },
+            { note: 'Rest', duration: 500 },
+            { note: 'G4', duration: 500 },
+            { note: 'Rest', duration: 500 },
+            { note: 'G4', duration: 500 },
+            { note: 'Rest', duration: 500 },
+            { note: 'A4', duration: 500 },
+            { note: 'Rest', duration: 500 },
+            { note: 'A4', duration: 500 },
+            { note: 'Rest', duration: 500 },
+            { note: 'G4', duration: 1000 },
+            { note: 'Rest', duration: 500 },
+            { note: 'F4', duration: 500 },
+            { note: 'Rest', duration: 500 },
+            { note: 'F4', duration: 500 },
+            { note: 'Rest', duration: 500 },
+            { note: 'E4', duration: 500 },
+            { note: 'Rest', duration: 500 },
+            { note: 'E4', duration: 500 },
+            { note: 'Rest', duration: 500 },
+            { note: 'D4', duration: 500 },
+            { note: 'Rest', duration: 500 },
+            { note: 'D4', duration: 500 },
+            { note: 'Rest', duration: 500 },
+            { note: 'C4', duration: 4000 },
+        ]
+    },
+    {
+            title: 'チューリップ',
+            notes: [
+            { note: 'C4', duration: 500 },
+            { note: 'D4', duration: 500 },
+            { note: 'E4', duration: 1000 },
+            { note: 'C4', duration: 500 },
+            { note: 'D4', duration: 500 },
+            { note: 'E4', duration: 1000 },
+            //
+            { note: 'G4', duration: 500 },
+            { note: 'E4', duration: 500 },
+            { note: 'D4', duration: 500 },
+            { note: 'C4', duration: 500 },
+            { note: 'D4', duration: 500 },
+            { note: 'E4', duration: 500 },
+            { note: 'D4', duration: 1000},
+            //
+            { note: 'C4', duration: 500 },
+            { note: 'D4', duration: 500 },
+            { note: 'E4', duration: 1000 },
+            { note: 'C4', duration: 500 },
+            { note: 'D4', duration: 500 },
+            { note: 'E4', duration: 1000 },
+            { note: 'G4', duration: 500 },
+            { note: 'E4', duration: 500 },
+            { note: 'D4', duration: 500 },
+            { note: 'C4', duration: 500 },
+            { note: 'D4', duration: 500 },
+            { note: 'E4', duration: 500 },
+            { note: 'C4', duration: 1000 },
+            //
+            { note: 'G4', duration: 250},
+            { note: 'Rest', duration: 250 },
+            { note: 'G4', duration: 250},
+            { note: 'Rest', duration: 250 },
+            { note: 'E4', duration: 250},
+            { note: 'Rest', duration: 250 },
+            { note: 'G4', duration: 250},
+            { note: 'Rest', duration: 250 },
+            { note: 'A4', duration: 250},
+            { note: 'Rest', duration: 250 },
+            { note: 'A4', duration: 250},
+            { note: 'Rest', duration: 250 },
+            { note: 'G4', duration: 1000},
+            { note: 'Rest', duration: 250 },
+            //
+            { note: 'E4', duration: 250},
+            { note: 'Rest', duration: 250 },
+            { note: 'E4', duration: 250},
+            { note: 'Rest', duration: 250 },
+            { note: 'D4', duration: 250},
+            { note: 'Rest', duration: 250 },
+            { note: 'D4', duration: 250},
+            { note: 'Rest', duration: 250 },
+            { note: 'C4', duration: 4000},
+        ]
+    },
+    {
+            title: 'かえるのうた',
+            notes: [
+            { note: 'C4', duration: 500 },
+            { note: 'D4', duration: 500 },
+            { note: 'E4', duration: 500 },
+            { note: 'F4', duration: 500 },
+            { note: 'E4', duration: 500 },
+            { note: 'D4', duration: 500 },
+            { note: 'C4', duration: 500 },
+            { note: 'Rest', duration: 500},
+            //
+            { note: 'E4', duration: 500 },
+            { note: 'F4', duration: 500 },
+            { note: 'G4', duration: 500 },
+            { note: 'A4', duration: 500 },
+            { note: 'G4', duration: 500 },
+            { note: 'F4', duration: 500 },
+            { note: 'E4', duration: 500 },
+            { note: 'Rest', duration: 500},
+            //
+            { note: 'C4', duration: 750 },
+            { note: 'Rest', duration: 250},
+            { note: 'C4', duration: 750 },
+            { note: 'Rest', duration: 250},
+            { note: 'C4', duration: 750 },
+            { note: 'Rest', duration: 250},
+            { note: 'C4', duration: 750 },
+            { note: 'Rest', duration: 250},
+            { note: 'C4', duration: 250 },
+            { note: 'C4', duration: 250 },
+            { note: 'D4', duration: 250 },
+            { note: 'D4', duration: 250 },
+            { note: 'E4', duration: 250 },
+            { note: 'E4', duration: 250 },
+            { note: 'F4', duration: 250 },
+            { note: 'F4', duration: 250 },
+            { note: 'E4', duration: 500 },
+            { note: 'D4', duration: 500 },
+            { note: 'C4', duration: 500 },
+        ]
+    }
+    ]
+
+     
+
+    function playNote(noteId, duration) {
+    if (timeoutid) clearTimeout(timeoutid);
+
+    const noteData = noteMap[noteId];
+    if (!noteData) {
+        console.warn(`未定義の音: ${noteId}`);
+        return;
+    }
+
+    // ラベル表示
+    noteDisplay.textContent = noteData.label;
+
+    // 休符なら音を鳴らさない
+    if (noteId === 'Rest' || noteData.freq === null) return;
+
+    if (!audioCtx) audioCtx = new AudioContext();
+    const osc = audioCtx.createOscillator();
+    osc.frequency.value = noteData.freq;
+    osc.connect(audioCtx.destination);
+    osc.start();
+    setTimeout(() => osc.stop(), duration);
+
+    timeoutid = setTimeout(() => {
+        noteDisplay.textContent = '';
+     }, duration);
+    }
+
+    keys.forEach(key => {
+  key.addEventListener('click', () => {
+    playNote(key.id, 500);  // 直接IDを渡せるようになった！
+    });
+    });
+
+    function playAutoSequence() {
+        const score = currentSong.notes;
+        if (!isPlaying || currentNoteIndex >= score.length) {
+            isPlaying = false;
+            autoplayButton.value = "自動演奏";
+            songDisplay.textContent = "";
+            noteDisplay.textContent = "";
+            keys.forEach(key => key.style.pointerEvents = 'auto');
+            return;
+        }
+
+        const { note, duration } = score[currentNoteIndex];
+        playNote(note, duration);
+
+        currentNoteIndex++;
+        if (isPlaying) {
+            timeoutId = setTimeout(playAutoSequence, duration);
+        }
+    }
+
+    autoplayButton.addEventListener('click', () => {
+        if (isPlaying) {
+            isPlaying = false;
+            autoplayButton.value = "自動演奏";
+            songDisplay.textContent = "";
+            noteDisplay.textContent = "";
+            keys.forEach(key => key.style.pointerEvents = 'auto');
+            clearTimeout(timeoutId);
+        } else {
+            isPlaying = true;
+            const selectedIndex = Math.floor(Math.random() * songs.length);
+            currentSong = songs[selectedIndex];
+
+            autoplayButton.value = "演奏中止";
+            songDisplay.textContent = `自動演奏中です：${currentSong.title}`;
+            keys.forEach(key => key.style.pointerEvents = 'none');
+
+            currentNoteIndex = 0;
+            playAutoSequence();
+         }
+        });
+    </script>
+</body>
+
+</html>

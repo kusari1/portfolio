@@ -28,6 +28,9 @@
         </form>
 
         <p><a href="register.php">新規登録ページへ</a></p>
+        <p><a href="https://portfolio02.dc-itex.com/nakano/0005/js/index.html">JavaScript:ピアノアプリ</p></a>
+        <p><a href="https://portfolio02.dc-itex.com/nakano/0005/wp/">WordPress:架空Webサイト</p></a>
+        <p><a href="https://portfolio02.dc-itex.com/nakano/0005/self_introduction/#syoukai">自己紹介サイト</a></p>
     </div>
 </body>
 </html>

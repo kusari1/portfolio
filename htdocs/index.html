@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <title>Hashiyama Takehiro's Portfolio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="style.css">
+  </head>
+  <body>
+    <p class = "pagetop">
+      <a href="#" title="ページトップへ戻る">
+        <img src="images/top.png" alt="△ PAGE TOP">
+      </a>
+    </p>
+  <!-- ヘッダー -->
+    <header class="clearfix">
+      
+      <h1><a href="#"><span>H</span>ashiyama Takehiro's Portfolio</a></h1>
+
+       <!-- ハンバーガーメニュー -->
+      <div class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+
+      <nav>
+        <ul class="clearfix">
+          <li><a href="#syoukai">自己紹介</a></li>
+          <li><a href="#jisou">実装サンプル</a></li>
+        </ul>
+      </nav>
+    </header>
+    <!-- メイン画像 -->
+    <div class="img-content">
+    </div>
+
+    <!-- メインコンテンツ -->
+     <main>
+        <h2 class="full-width-heading-syoukai" id="syoukai">自己紹介<span>Self Introduction</span></h2>
+        <p class="text-content">私の名前は<span class="name">橋山岳央</span>です。日本出身で現在はディーキャリアITエキスパート中野オフィスにて、
+        プログラミング学習に取り組んでおります。<br>
+        どうぞよろしくお願いいたします。</p>
+
+      <!-- サブイメージ -->
+      <div class="subimg">
+         <img src="images/img01.jpg" alt="">
+      </div>
+
+      <!-- 趣味 webサイト -->
+      <div class="list-flex-container">
+        <div>
+            <h3>スキル<span>Skills</span></h3>
+            <ul>
+                <li>HTML/CSS</li>
+                <li>JavaScript</li>
+                <li>PHP/MySQL</li>
+            </ul>
+        </div>
+
+        <div>
+          <h3>使用可能ツール<span>Tours</span></h3>
+          <ul>
+            <li>Github</li>
+            <li>Visual Studio Code</li>
+            <li>Slack</li>
+            <li>FileZilla</li>
+            <li>Redmine</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 画像ギャラリー -->
+      <h2 class="full-width-heading" id="jisou">実装サンプル<span>Sample</span></h2>
+      <h3 class="full-width-subheading">画像ギャラリー</h3>
+        <div class="gallery-flex-container">
+          <figure>
+            <img src="images/gallery01.jpg" alt="宇宙飛行士と月">
+            <figcaption>
+              <h4>宇宙飛行士と月</h4>
+              <p>幻想的な色彩の月と雲の前に、宇宙飛行士が立っています。</p>
+            </figcaption>
+          </figure>
+
+          <figure>
+            <img src="images/gallery02.jpg" alt="">
+            <figcaption>
+              <h4>朝日と石</h4>
+              <p>積み重ねられた石を、朝日が照らしています。</p>
+            </figcaption>
+          </figure>
+
+          <figure>
+            <img src="images/gallery03.jpg" alt="">
+            <figcaption>
+            <h4>鏡のような湖</h4>
+            <p>空と海がどちらかわからなくなるような、鏡のような湖です。</p>
+            </figcaption>
+          </figure>
+          <figure>
+            <img src="images/gallery04.jpg" alt="">
+            <figcaption>
+              <h4>ハートの風船</h4>
+              <p>青空をバックに、たくさんの色とりどりのハートの風船が浮いています。</p>
+            </figcaption>
+          </figure>
+       </div>
+
+       <!-- 訓練課題 -->
+        <h3 class="full-width-subheading">訓練課題</h3>
+          <div class="assignment-container">
+            <h4>JavaScript:ピアノアプリ</h4>
+            <a href="https://portfolio02.dc-itex.com/nakano/0005/js/index.html" target="_blank">
+              <img src="images/javascriptピアノアプリ.png" alt="">
+            </a>
+            <p><span class="text-title">--要件外機能--
+                2つの要件外機能を実装しました。</span><br>
+                <span class="text-title">1点:ド(高音)の実装</span>
+                解説:要件機能の鍵盤と同じ形式のド(高音)の鍵盤を追加しました。 既存の鍵盤と同様の機能を有しています。
+                この機能の目的:多くのピアノアプリを参考資料にしていた所、ド(高音)が存在しないのが不自然だったため追加しました。
+
+                工夫点:既存のリソースを流用し、余計な要素を使用しない事で、この機能によって不具合が発生しにくいように工夫しました。
+            </p>
+            <p>
+                <span class="text-title">2点:鍵盤を押すとその音が実際に出力する機能を追加しました。</span>
+                解説:Web Audio APIを使用して、鍵盤の音に対応した周波数のHzが流れる機能を実装しました。
+                ディスプレイに押した鍵盤の音階が表示されるのと同様に、対応した周波数を配列に格納しておき、
+                鍵盤に押した時に、音階の表示と同時にwep Audio APIを用いて、出力するようにしました。
+                例:ド(低音)の鍵盤を押した場合、261Hzの音が流れる。
+            </p>
+            <p>
+                目的:ピアノアプリとして音を出す機能は有用だと考え実装しました。
+            </p>
+            <p>
+                <span class="text-title">工夫点:</span>Web Audio APIを使用する事で、外部からmp3ファイルを用いずにブラウザから音が流れるように工夫しました。
+            </p>
+            <p>
+              <span class="text-title">使用方法:</span>鍵盤部分を押すと音が鳴り音階が表示されます。(音は左からド(低音)レミファソラシド(高音)です。)
+            </p>
+            <p>
+              <span class="text-title">自動演奏:</span>自動演奏ボタンを押すと、3曲の内1曲がランダムに自動で演奏されます。
+            </p>
+
+            <h4>PHP:ECサイト</h4>
+            <a href="https://portfolio02.dc-itex.com/nakano/0005/ec_site/login.php" target="_blank">
+              <img src="images/PHP・ECサイト.png" alt="">
+            </a>
+            <p>
+              <span class="text-title">--要件外機能--
+                2つの要件外機能を実装しました。</span><br>
+                <span class="text-title">1点:</span>商品一覧ページの段階で商品を任意の数指定してカートに入れられるようにしました。
+            </p>
+            <p>
+                <span class="text-title">2点:</span>二重投稿防止の改善として、PRGパターンを実装しました。
+            </p>
+            <p>
+                <span class="text-title">工夫点:</span>セキュリティ向上のためパスワードをハッシュ化しました。password_verify() を用いて、「入力したパスワード」を内部でハッシュ化して、「保存されたハッシュ」と比較しています。
+            </p>
+            <p>
+              <span class="text-title">使用方法:</span>①新規登録ページで自身のユーザ名とパスワードを設定してください。②ログインページで登録したユーザ名とパスワードを入力すると、
+              ログインが完了し、商品ページへ移行します。③商品ページから購入したい商品の下部のカートに入れるボタンを押すとショッピングカートに選択した商品が入ります。④購入したい商品をすべてショッピングカートに入れ終わった後、画面右上のショッピングカートボタンを押してください。
+              ⑥ショッピングカートで先ほど入れた商品名と個数を確認して問題なければ、購入するボタンを押してください。これで購入が完了します。
+            </p>
+            <p>
+              <span class="text-title">商品管理ページ(管理者ページ):</span>ユーザ名とパスワード共に、「ec_admin」と入力すると、商品の管理画面に遷移します。
+              商品の追加や削除、在庫管理、公開、非公開を設定できます。
+            </p>
+
+            <h4>WordPress:架空Webサイト</h4>
+            <a href="https://portfolio02.dc-itex.com/nakano/0005/wp/" target="_blank">
+              <img src="images/WordPress.png" alt="">
+            </a>
+
+            <p>
+                <span class="text-title">工夫点:</span>HTMLで作られた既存の静的ファイルから、WordPressでテーマを作成しました。プラグインを用いて、パンくずリスト・お問い合わせフォーム・ページ送りナビゲーションを実装しています。
+            </p>
+          </div>
+     </main>
+
+     <!-- footer -->
+     <footer>
+        <p>Copyright © 2025 Hashiyama Takehiro</p>
+     </footer>
+     <!-- ハンバーガーメニュー -->
+     <script>
+      const hamburger = document.getElementById('hamburger');
+      const nav = document.querySelector('header nav');
+
+      hamburger.addEventListener('click', () => {
+        hamburger.classList.toggle('active');
+        nav.classList.toggle('open');
+      });
+    </script>
+  </body>
+</html>

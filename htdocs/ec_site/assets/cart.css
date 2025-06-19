@@ -1,0 +1,117 @@
+body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            height: 100vh;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        header{
+            background: #a7af7e;
+        }
+
+        p{
+          margin: 0;
+        }
+
+        header h1{
+          margin: 0;
+          height: 60px;
+          line-height: 60px;
+          margin-top: 10px;
+          color: #f4f4f4;
+          text-align: center;
+        }
+
+        nav{
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            height: 80px;
+            line-height: 80px;
+            background-color: #67cf7e;
+            padding: 0 20px;
+            border-top: 2px solid black;
+        }
+
+        nav a{
+            text-align: right;
+        }
+
+        .ec_logo{
+            margin: 0;
+            text-align: left;
+            display: inline-block;
+            color: #eee;
+        }
+
+        header, .cart, .actions {
+            margin-bottom: 20px;
+        }
+        .item {
+            border: 1px solid #ddd;
+            background: #fff;
+            padding: 10px;
+            margin-bottom: 10px;
+            font-size: 1.5em;
+        }
+        .item img {
+            height: 100px;
+        }
+
+        .item_input{
+            height: 34px;
+            margin-top: 15px;
+        }
+
+        .item_input input {
+            font-size: 20px;
+            height: 100%;
+            line-height: 34px;
+            box-sizing: border-box;
+        }
+
+        .item_input button {
+            font-size: 20px;
+            height: 100%;
+            box-sizing: border-box;
+            padding: 0 10px;
+            vertical-align: middle;
+        }
+
+        .cart{
+          margin: 30px 30px;
+        }
+
+        .actions{
+          display: flex;
+          justify-content: space-between;
+          height: 60px;
+          line-height: 60px;
+          font-size: 30px;
+        }
+
+        .actions form{
+          width: 400px;
+          background: #a7af7e;
+          color: #f4f4f4;
+        }
+
+        .actions form button{
+          width: 100%;
+          line-height: 60px;
+          padding: 0;
+          background: #a7af7e;
+          border: none;
+          cursor: pointer;
+          font-size: 30px;
+        }
+
+        .error {
+            color: red;
+            margin: 0 30px;
+        }
+        .message {
+            color: green;
+            margin: 0 30px;
+        }

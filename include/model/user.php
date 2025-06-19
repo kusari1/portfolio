@@ -14,7 +14,14 @@ function get_user_by_id($db, $user_id) {
     return isset($result[0]) ? $result[0] : null;
 }
 
-
+function get_user_by_name(PDO $conn, string $username): ?array {
+    $sql = "SELECT * FROM user_table WHERE user_name = :username";
+    $stmt = $conn->prepare($sql);
+    $stmt->bindValue(':username', $username, PDO::PARAM_STR);
+    $stmt->execute();
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $user ?: null; // ✅ null を返すように変更
+}
 
 // セッションからユーザー名を取得（使うかはお好み）
 function get_login_user($db) {

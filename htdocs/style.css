@@ -390,7 +390,7 @@ footer p{
 
   .list-flex-container div{
     width: 100%;
-    margin-top: 10px;
+    margin: 10px 0px;
   }
 
   .list-flex-container span{

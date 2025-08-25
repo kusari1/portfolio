@@ -80,7 +80,7 @@ Web Audio API を利用し、鍵盤のクリックで音を鳴らしたり、自
 ## 🖥 デモ画面
 - 自動演奏中の画面
 - 鍵盤UI  
-https://github.com/kusari1/portfolio/issues/1#issue-3350190612
+https://github.com/kusari1/portfolio/issues/でも画像-3350190612
 
 
 ## URL

@@ -1,5 +1,5 @@
-README.md (ec-site)
-# 簡易ECサイト（学習用ポートフォリオ）
+README.md
+# 簡易ECサイト（学習用ポートフォリオ）(htdocs/ec_site)
 
 ## 📌 プロジェクト概要
 PHPとMySQLを用いて作成した学習用の簡易ECサイトです。  

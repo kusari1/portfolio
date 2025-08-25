@@ -1,4 +1,4 @@
-README.md（サンプル）
+README.md (ec-site)
 # 簡易ECサイト（学習用ポートフォリオ）
 
 ## 📌 プロジェクト概要

@@ -1,4 +1,3 @@
-README.md
 # 簡易ECサイト（学習用ポートフォリオ）(htdocs/ec_site)
 
 ## 📌 プロジェクト概要
@@ -48,8 +47,6 @@ https://github.com/kusari1/portfolio/issues/3#issue-3350213967
 
 実務ではCSRF対策・バリデーション強化などが必要です。
 
-README.md
-
 # 🎹 簡易ピアノアプリ（JavaScript実験版）(htdocs/js/index.html)
 
 ## 📌 プロジェクト概要
@@ -79,7 +76,6 @@ Web Audio API を利用し、鍵盤のクリックで音を鳴らしたり、自
 - 自動演奏中の画面
 - 鍵盤UI  
 https://github.com/kusari1/portfolio/issues/1#issue-3350190612
-
 
 ## URL
 https://portfolio02.dc-itex.com/nakano/0005/js/index.html

@@ -28,28 +28,10 @@ Webアプリ開発の基礎として、データベース設計・ユーザー�
 - `orders`（注文情報）  
 - `order_items`（注文ごとの商品明細）  
 
-※ER図は `docs/er-diagram.png` に掲載（任意）  
+※ER図はREADMEに添付 
 
-## 🚀 セットアップ方法
-1. このリポジトリをクローン  
-   ```bash
-   git clone https://github.com/yourname/simple-ecsite.git
-
-
-MySQLにデータベースを作成し、db/schema.sql をインポート
-
-config.sample.php をコピーして config.php を作成し、DB接続情報を入力
-
-// config.php
-define('DB_HOST', 'localhost');
-define('DB_USER', 'your_username');
-define('DB_PASS', 'your_password');
-define('DB_NAME', 'ecsite_db');
-
-
-Apache + PHP 環境（XAMPPなど）で public/ ディレクトリをルートに設定
-
-ブラウザでアクセスして動作確認
+## URL
+https://portfolio02.dc-itex.com/nakano/0005/ec_site/login.php
 
 📷 スクリーンショット（任意）
 

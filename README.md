@@ -31,7 +31,7 @@ Webアプリ開発の基礎として、データベース設計・ユーザー�
 ※ER図はREADMEに添付 
 
 ## URL
-https://portfolio02.dc-itex.com/nakano/0005/ec_site/login.php
+https://portfolio02.dc-itex.com/nakano/0005/ec_site/login.php  
 MySQLログイン:
 ユーザー名:user
 BASIC認証パスワード：Zp5bfiaN

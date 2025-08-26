@@ -118,8 +118,8 @@ htdocs/
 📷 スクリーンショット（任意）
 
 - 自己紹介セクション  
+  ![](htdocs/assets/自己紹介セクション.png)
 - 作品サンプル表示画面  
-https://github.com/kusari1/portfolio/issues/2#issue-3350203435
 
 ## URL
 https://portfolio02.dc-itex.com/nakano/0005/index.html  

@@ -75,7 +75,7 @@ Web Audio API を利用し、鍵盤のクリックで音を鳴らしたり、自
 ## 🖥 デモ画面
 - 鍵盤UI  
  ![](htdocs/assets/鍵盤uI.png)  
--自動演奏UI
+-自動演奏UI  
  ![](htdocs/assets/自動演奏UI.png)
 
 ## URL

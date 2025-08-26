@@ -36,10 +36,9 @@ MySQLログイン:
 BASIC認証パスワード：Zp5bfiaN
 
 📷 スクリーンショット（任意）
-- 商品一覧ページ
-- カートページ
-- 注文完了画面  
-https://github.com/kusari1/portfolio/issues/3#issue-3350213967
+- ログインページ
+  ![](htdocs/assets/ER図.png)
+- 商品一覧ページ  
 
 📌 備考
 

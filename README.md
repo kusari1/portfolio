@@ -37,8 +37,9 @@ BASIC認証パスワード：Zp5bfiaN
 
 📷 スクリーンショット（任意）
 - ログインページ
-  ![](htdocs/assets/ER図.png)
-- 商品一覧ページ  
+  ![](htdocs/assets/ログイン画面.png)
+- 商品一覧ページ
+  ![](htdocs/assets/商品一覧ページ.png)
 
 📌 備考
 

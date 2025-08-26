@@ -119,7 +119,8 @@ htdocs/
 
 - 自己紹介セクション  
   ![](htdocs/assets/自己紹介セクション.png)
-- 作品サンプル表示画面  
+- 作品サンプル表示画面
+  ![](htdocs/assets/Videotogif.gif)
 
 ## URL
 https://portfolio02.dc-itex.com/nakano/0005/index.html  

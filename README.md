@@ -41,7 +41,7 @@ BASIC認証パスワード：Zp5bfiaN
 - 商品一覧ページ
   ![](htdocs/assets/商品一覧ページ.png)
 - ER図  
-  ![](htdocs/assets/ER.html)
+  ![](htdocs/assets/ER図.png)
 - 画面遷移図
   ![](htdocs/assets/画面遷移図.png)
 

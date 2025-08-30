@@ -132,4 +132,58 @@ https://portfolio02.dc-itex.com/nakano/0005/index.html
 
 ## 📌 備考
 - 学習成果をまとめる目的で制作したサイトです。  
-- 作品紹介部分は今後も追加・更新を予定しています。  
+- 作品紹介部分は今後も追加・更新を予定しています。
+# 電子会議システム（BBS）
+
+PHPとMySQLで構築した簡易掲示板システムです。  
+学習用教材の写経をもとに作成し、投稿・編集・削除・詳細確認の一連の機能を実装しています。
+
+---
+# （学習用ポートフォリオ）(htdocs/ec_site)
+
+## 概要
+- ユーザーはスレッドにメッセージを投稿可能
+- 投稿内容は確認画面で確認した後、データベースに保存
+- 投稿は編集・削除・詳細確認が可能
+- パスワード（4桁）による認証機能を導入
+- 投稿一覧は最大40文字まで表示し、超過時は「続きは詳細」を表示
+
+---
+
+## 主な機能
+1. **スレッド選択・投稿**
+   - `bbs_top.php`：スレッド選択画面（デフォルト thread=0）
+   - `bbs_enter.php`：メッセージ入力画面と過去投稿一覧表示
+
+2. **投稿確認・保存**
+   - `confirm.php`：入力チェック（未入力やパスワード形式）、確認画面表示
+   - `submit.php`：データベース保存、追加完了画面表示
+
+3. **投稿編集**
+   - `update.php`：編集画面表示
+   - `update-confirm.php`：更新確認後にデータベース更新
+
+4. **投稿削除**
+   - `delete.php`：削除画面表示・パスワード入力
+   - `delete-confirm.php`：削除確認画面
+   - `delete-submit.php`：実際の削除処理
+
+5. **投稿詳細確認**
+   - `detail.php`：投稿内容の詳細表示
+
+---
+
+## データベース
+**テーブル名**：`discussion`
+
+```sql
+CREATE TABLE discussion (
+    id INT(11) NOT NULL AUTO_INCREMENT,
+    thread INT(11) NOT NULL,
+    name VARCHAR(50) NOT NULL,
+    message TEXT NOT NULL,
+    passwd CHAR(4) NOT NULL,
+    modified TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+

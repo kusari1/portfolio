@@ -1,0 +1,17 @@
+Webアプリケーション開発
+第14回
+20203/07/24
+2001010607 橋山 岳央
+① $_GET
+②doDB
+③select
+④discussion
+⑤id
+⑥query 
+⑦$mysqli
+⑧close
+⑨modified
+⑩$data
+PHP部分では、select文で、discussionテーブルからレコードを取り出し、
+HTML部分の$data["message"]でbbs_enterでは、省略されていた、
+40文字以降の文字列の部分も含めて、表示することが出来ました。

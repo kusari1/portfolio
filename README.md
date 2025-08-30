@@ -172,7 +172,7 @@ PHPとMySQLで構築した簡易掲示板システムです。
    - `detail.php`：投稿内容の詳細表示
   
 6. **サンプル画像**
-   -`bbs_top.php`
+   - `bbs_top.php` : 
     ![](htdocs/assets/Screenshot 2025-08-30 at 13-07-00 電子会議システム.png)
 
 ---

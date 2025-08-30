@@ -150,6 +150,9 @@ PHPとMySQLで構築した簡易掲示板システムです。
 - パスワード（4桁）による認証機能を導入
 - 投稿一覧は最大40文字まで表示し、超過時は「続きは詳細」を表示
 
+## URL:  
+https://portfolio02.dc-itex.com/nakano/0005/Lesson14/Lesson14/bbs_enter.php?thread=0
+
 ---
 
 ## 主な機能

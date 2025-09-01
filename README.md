@@ -195,7 +195,7 @@ CREATE TABLE discussion (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 ```
 
-##🎲 すごろくレースゲーム（Java簡易版） (CU2001010607_java_report13.java)
+##🎲 すごろくレースゲーム（Java簡易版） (htdocs/CU2001010607_java_report13.java)
 ---
 ##📌 プロジェクト概要
 

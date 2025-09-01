@@ -180,8 +180,6 @@ https://portfolio02.dc-itex.com/nakano/0005/Lesson14/Lesson14/bbs_enter.php?thre
    - `bbs_top.php` : 
     ![電子会議システム](htdocs/assets/Screenshot-2025-08-30-13-07-00-BBS.png)
 
----
-
 ## データベース
 **テーブル名**：`discussion`
 

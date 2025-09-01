@@ -196,9 +196,10 @@ CREATE TABLE discussion (
     PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 ```
+
+##🎲 すごろくレースゲーム（Java簡易版） (CU2001010607_java_report13.java)
 ---
-🎲 すごろくレースゲーム（Java簡易版） (CU2001010607_java_report13.java)
-📌 プロジェクト概要
+##📌 プロジェクト概要
 
 Javaで作成した、コンソール上で遊べる学習用のすごろくレースゲームです。
 複数プレイヤー（最大4人）が順番にサイコロを振り、体力を管理しながらゴールを目指します。

@@ -307,6 +307,9 @@ VBA（Visual Basic for Applications）
 
 必要に応じてPDF保存や印刷が可能
 
+## サンプル画像
+![](htdocs/assets/VBAサンプル.png)
+
 ## 学習ポイント
 
 Excelデータのフィルター・コピー・貼り付け操作をVBAで自動化

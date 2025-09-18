@@ -52,6 +52,8 @@ BASIC認証パスワード：Zp5bfiaN
 
 実務ではCSRF対策・バリデーション強化などが必要です。
 
+---
+
 # 🎹 簡易ピアノアプリ（JavaScript実験版）(htdocs/js/index.html)
 
 ## 📌 プロジェクト概要

@@ -145,8 +145,6 @@ https://portfolio02.dc-itex.com/nakano/0005/index.html
 PHPとMySQLで構築した簡易掲示板システムです。  
 学習用教材の写経をもとに作成し、投稿・編集・削除・詳細確認の一連の機能を実装しています。
 
----
-
 ## 概要
 - ユーザーはスレッドにメッセージを投稿可能
 - 投稿内容は確認画面で確認した後、データベースに保存
@@ -156,8 +154,6 @@ PHPとMySQLで構築した簡易掲示板システムです。
 
 ## URL:  
 https://portfolio02.dc-itex.com/nakano/0005/Lesson14/Lesson14/bbs_enter.php?thread=0
-
----
 
 ## 主な機能
 1. **スレッド選択・投稿**

@@ -139,7 +139,7 @@ https://portfolio02.dc-itex.com/nakano/0005/index.html
 
 ---
 
-#🌐 事務職向けポートフォリオ (htdocs/事務職用ポートフォリオ/index.html)
+# 🌐 事務職向けポートフォリオ (htdocs/事務職用ポートフォリオ/index.html)
 
 ## 📌 プロジェクト概要
 - Excel・Word・Googleスプレッドシート・Googleドキュメント・Googleスライドなどを活用し、事務職での作業能力を可視化するために制作したポートフォリオです。

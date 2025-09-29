@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" /> <!-- 文字コードをUTF-8に設定 -->
+  <meta name="viewport" content="width=device-width,initial-scale=1" /> <!-- スマホ対応のレスポンシブ設定 -->
+  <title>事務職向け ポートフォリオ | サンプル</title> <!-- ページタイトル -->
+  <style>
+    /* =============================
+       CSS変数（テーマカラーなど）
+       ============================= */
+    :root{--accent:#2b6cb0;--muted:#6b7280;--bg:#f8fafc;--card:#ffffff}
+
+    body{font-family:sans-serif;background:var(--bg);margin:0;color:#111}
+    .container{max-width:980px;margin:32px auto;padding:24px} /* 中央寄せ & 最大幅指定 */
+
+    header{display:flex;align-items:center;gap:16px} /* ヘッダーを横並びに */
+    span{font-weight: bold; font-size: 24px;}
+    .avatar{width:88px;height:88px;border-radius:10px;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:bold}
+    nav{margin-top:8px}
+    nav button{background:none;border:none;color:var(--accent);margin-right:12px;cursor:pointer}
+
+    h1{margin:0;font-size:1.5rem}
+    h2{border-left:4px solid var(--accent);padding-left:8px;margin-top:32px;font-size:1.25rem}
+    p.lead{color:var(--muted)}
+
+    .grid{display:grid;grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));gap:16px} 成果物カードを自動で並べる
+    .card{background:#fff;border-radius:8px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,.1)} /* カードデザイン */
+    .card h3{margin-top:0}
+    .thumb{height:120px;background:#e5e7eb;border-radius:4px;margin-bottom:8px;display:flex;align-items:center;justify-content:center;color:#6b7280;font-size:14px}
+
+    .btn{background:var(--accent);color:#fff;padding:6px 12px;border:none;border-radius:4px;cursor:pointer;font-size:.875rem;text-decoration:none;display:inline-block}
+
+    footer{margin-top:40px;padding:16px;text-align:center;font-size:.875rem;color:var(--muted)}
+
+    /* モーダルのスタイル */
+    .modal{position:fixed;inset:0;background:rgba(2,6,23,0.5);display:none;align-items:center;justify-content:center}
+    .modal.open{display:flex} /* openクラスが付くと表示 */
+    .modal .panel{background:#fff;border-radius:8px;padding:24px;max-width:600px;width:90%;}
+    .modal h3{margin-top:0}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- ヘッダー部分 -->
+    <header>
+      <div class="avatar">HT</div> <!-- アバター（名前イニシャル表示） -->
+      <div>
+        <h1>橋山 岳央 | 事務職ポートフォリオ</h1> <!-- 名前と肩書き -->
+        <nav>
+          <!-- ページ内スクロール用のボタン -->
+          <button data-scroll="profile">プロフィール</button>
+          <button data-scroll="portfolio">成果物</button>
+          <button data-scroll="contact">連絡先</button>
+        </nav>
+      </div>
+    </header>
+
+    <!-- プロフィールセクション -->
+    <section id="profile">
+      <h2>プロフィール</h2>
+      <div class="card">
+        <p><span>1.経歴:</span>学生時代にプログラミング（HTML/CSS/JavaScript）を学習
+          MOS（Word, Excel, PowerPoint）取得済
+          学習経験を活かして、自己紹介サイトや簡易ECサイトを制作
+        </p>
+        <p>
+          <span>2. スキル:</span>Word・Excel・PowerPoint：資料作成、関数・条件付き書式の使用、プレゼン資料作成
+          データ入力・整理：正確性とスピードに自信あり
+          プログラミング（補助的）：HTML/CSS/JavaScriptでの簡易サイト作成
+          コミュニケーション：メール・チャットでの連絡経験あり
+        </p>
+        <p>
+          <span>3. 強み:</span>
+          コツコツと正確に作業することが得意
+
+          手順書やマニュアルをもとに、自己判断で作業を進められる
+
+          チームでのサポート役として周囲を支えることにやりがいを感じる
+        </p>
+      </div>
+    </section>
+
+    <section id="portfolio">
+    <h2>成果物</h2>
+    <div class="grid">
+        <!-- Googleドキュメント -->
+        <article class="card">
+        <div class="thumb">
+            <img src="images/依頼書.png" alt="Googleドキュメントサンプル" style="width:100%; height:100%; object-fit:contain; border-radius:4px;">
+        </div>
+        <h3>依頼書サンプル(Googleドキュメント)</h3>
+          <button 
+            class="btn" 
+            data-title="依頼書サンプル(Googleドキュメント)" 
+            data-desc="この依頼書は、就労移行支援事業所の卒業式イベントの運営に参加した際に自身が請け負った、卒業証書の作成のタスクの際、卒業証書に使用する厚紙の注文以来の際に上司に提出した資料です。工夫した点は、出来るだけシンプルさを意識し、項目を分ける事で情報が自然と読み取れるように意識した点です。">
+            詳細を見る
+        </button>
+        <a href="https://docs.google.com/document/d/11800wsGfj3u04z8gMH26168pnMXhnejv14m13qV_hAs/edit?hl=ja&tab=t.0" 
+            target="_blank" class="btn">開く</a>
+        </article>
+
+
+        <!-- Googleスプレッドシート -->
+        <article class="card">
+        <div class="thumb"><img src="images/タスク資料一覧.png" alt="Googleドキュメントサンプル" style="width:100%; height:100%; object-fit:contain; border-radius:4px;"></div>
+        <h3>タスク資料一覧(Googleスプレッドシート)</h3>
+        <button 
+            class="btn" 
+            data-title="タスク資料一覧(Googleスプレッドシート)" 
+            data-desc="就労移行支援事業所での卒業式運営において、 メンバーがそれぞれ個別に資料を作成していたため、情報共有が困難な状況でした。
+            連携が必要なタスクでは、毎回相手に資料を求める必要があり、お互いの進捗把握に時間がかかっていました。
+            この課題をミーティングで提起し、 全員がアクセスできるスプレッドシートに資料リンクを整理・分類して共有する仕組みを提案・実施しました。
+            ">
+            詳細を見る
+        </button>
+        <a href="https://docs.google.com/spreadsheets/d/1twUaGIB1QqGxz43zz8CW413rMqab-UFf0JI80sGXFAk/edit?gid=0#gid=0" 
+            target="_blank" class="btn">開く</a>
+        </article>
+
+        <!-- Excel -->
+        <article class="card">
+         <div class="thumb"><img src="images/見積書VBA.png" alt="Googleドキュメントサンプル" style="width:100%; height:100%; object-fit:contain; border-radius:4px;"></div>
+        <h3>請求書計算VBAアプリ（Microsoft Office Excel2016）</h3>
+        <button 
+            class="btn" 
+            data-title="請求書計算VBAアプリ（Microsoft Office Excel2016）" 
+            data-desc="githubにて詳細を掲載。
+            ">
+            詳細を見る
+        </button>
+        <a href="https://github.com/kusari1/portfolio" class="btn" target="_blank">github</a>
+        </article>
+
+        <!-- Googleスライド -->
+        <article class="card">
+        <div class="thumb"><img src="images/当日のスライド.png" alt="Googleドキュメントサンプル" style="width:100%; height:100%; object-fit:contain; border-radius:4px;"></div>
+        <h3>卒業式イベント当日のスライド（Googleスライド）</h3>
+        <button 
+            class="btn" 
+            data-title="卒業式イベント当日のスライド（Googleスライド）" 
+            data-desc="就労移行支援事業所での卒業式運営において、 100人キャパシティの卒業式の会場のスクリーンに表示するスライドのデザイン制作を担当した際に、作成しました。工夫した点として、当事業所はITの学習があるため、ITと日本の和をテーマにデザインしました。
+            ">
+            詳細を見る
+        </button>
+        <a href="https://docs.google.com/presentation/d/1IKqPkh7oIP__vkVQACtAgFDFRWFYC104Qc6VNz-7fms/edit?slide=id.g353456bf20b_6_2087#slide=id.g353456bf20b_6_2087" 
+            target="_blank" class="btn">開く</a>
+        </article>
+    </div>
+    </section>
+
+    <!-- リンクセクション -->
+    <section id="contact">
+      <h2>その他成果物</h2>
+      <div class="card contact">
+        <div>
+          <div class="meta">GitHub</div>
+          <div><a href="https://github.com/kusari1/portfolio" target="_blank">https://github.com/kusari1/portfolio</a></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- フッター -->
+    <footer>© 2025 橋山 岳央</footer>
+  </div>
+
+  <!-- モーダル（詳細表示用） -->
+  <div id="modal" class="modal">
+    <div class="panel">
+      <button id="closeModal" class="btn">閉じる</button>
+      <h3 id="modalTitle">タイトル</h3>
+      <div id="modalBody">説明テキスト</div>
+    </div>
+  </div>
+
+  <script>
+    // =============================
+    // ページ内スクロール処理
+    // =============================
+    document.querySelectorAll('button[data-scroll]').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        const id = btn.getAttribute('data-scroll'); // クリックされたボタンの対象ID取得
+        document.getElementById(id).scrollIntoView({behavior:'smooth'}); // スムーススクロール
+      });
+    });
+
+    // =============================
+    // モーダル開閉処理
+    // =============================
+    const modal = document.getElementById('modal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalBody = document.getElementById('modalBody');
+    const closeModal = document.getElementById('closeModal');
+
+    document.querySelectorAll('.card button').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const title = btn.getAttribute('data-title');
+        const desc = btn.getAttribute('data-desc');
+
+        modalTitle.textContent = title;
+        modalBody.textContent = desc;
+
+        modal.classList.add('open');
+    });
+    });
+
+    closeModal.addEventListener('click', () => {
+    modal.classList.remove('open');
+    });
+  </script>
+</body>
+</html>

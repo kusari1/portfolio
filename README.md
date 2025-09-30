@@ -173,7 +173,7 @@ htdocs/事務職用ポートフォリオ/
 📷 自己紹介・プロフィールセクション
 
 ## URL
-https://github.com/kusari1/portfolio
+https://portfolio02.dc-itex.com/nakano/0005/%E4%BA%8B%E5%8B%99%E8%81%B7%E7%94%A8%E3%83%9D%E3%83%BC%E3%83%88%E3%83%95%E3%82%A9%E3%83%AA%E3%82%AA/index.html
 
 ---
 

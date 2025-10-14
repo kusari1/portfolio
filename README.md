@@ -32,7 +32,7 @@ Webアプリ開発の基礎として、データベース設計・ユーザー�
 ## URL
 https://portfolio02.dc-itex.com/nakano/0005/ec_site/login.php  
 
-MySQLログイン:  
+## MySQLログイン:  
 ユーザー名:user  
 BASIC認証パスワード：Zp5bfiaN
 
@@ -88,6 +88,10 @@ Web Audio API を利用し、鍵盤のクリックで音を鳴らしたり、自
 ## URL
 https://portfolio02.dc-itex.com/nakano/0005/js/index.html
 
+## MySQLログイン:  
+ユーザー名:user  
+BASIC認証パスワード：Zp5bfiaN
+
 ## 📌 備考
 - 学習目的で制作した簡易アプリのため、デザインや機能は最小限です。  
 - 今後の改善点として、キーボード入力対応や楽曲追加、レスポンシブ対応などを予定しています
@@ -133,6 +137,10 @@ htdocs/
 ## URL
 https://portfolio02.dc-itex.com/nakano/0005/index.html  
 
+## MySQLログイン:  
+ユーザー名:user  
+BASIC認証パスワード：Zp5bfiaN
+
 ## 📌 備考
 - 学習成果をまとめる目的で制作したサイトです。  
 - 作品紹介部分は今後も追加・更新を予定しています。
@@ -175,6 +183,9 @@ htdocs/事務職用ポートフォリオ/
 ## URL
 https://portfolio02.dc-itex.com/nakano/0005/%E4%BA%8B%E5%8B%99%E8%81%B7%E7%94%A8%E3%83%9D%E3%83%BC%E3%83%88%E3%83%95%E3%82%A9%E3%83%AA%E3%82%AA/index.html
 
+## MySQLログイン:  
+ユーザー名:user  
+BASIC認証パスワード：Zp5bfiaN
 ---
 
 # 🪧電子会議システム（BBS）(htdocs/online forum)
@@ -354,8 +365,3 @@ Excelデータのフィルター・コピー・貼り付け操作をVBAで自動
 条件付き処理やループを用いたデータ集計
 
 ---
-
-## 事務職用のポートフォリオ
-
-## URL
-https://portfolio02.dc-itex.com/nakano/0005/%25E4%25BA%258B%25E5%258B%2599%25E8%2581%25B7%25E7%2594%25A8%25E3%2583%259D%25E3%2583%25BC%25E3%2583%2588%25E3%2583%2595%25E3%2582%25A9%25E3%2583%25AA%25E3%2582%25AA/index.html
